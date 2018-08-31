@@ -1,0 +1,35 @@
+{
+  "name": "pixit",
+  "version": "0.1.0",
+  "engines": {
+    "node": "8.9.3",
+    "npm": "5.6.0"
+  },
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "node-sass": "^4.9.3",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "sass": "^1.13.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.0",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.4.0",
+    "file-loader": "^2.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --mode development",
+    "lint": "eslint ./src/"
+  }
+}
