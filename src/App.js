@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { ChatApp } from './ChatApp';
+import { ChatApp } from './chat/ChatApp';
 import { Canvas } from './canvas/Canvas';
 import { Palette } from './canvas/Palette';
 import { Presets } from './canvas/Presets';
@@ -47,6 +47,7 @@ class App extends Component {
               <Presets onPresetChange={this.changePreset} />
             </div>
           </div>
+          <ChatApp />
         </div>
       </div>
     );

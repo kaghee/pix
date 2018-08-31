@@ -8,6 +8,7 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
+    "@pusher/chatkit": "^0.7.17",
     "node-sass": "^4.9.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
