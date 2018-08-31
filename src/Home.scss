@@ -1,0 +1,54 @@
+* {
+  box-sizing: border-box;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.start-box {
+  border: 3px solid black;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 500px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  input, button, select, label {
+    border: none;
+    border-radius: 3px;
+    font-size: 20px;
+    padding: 8px 10px;
+  }
+  .start-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    .name {
+      width: 85%;
+    }
+    .rounds {
+      margin-top: 40px;
+      text-align: center;
+      select {
+        margin-left: 10px;
+        text-align: center;
+        width: auto;
+      }
+    }
+  }
+  .btn.play {
+    width: 200px;
+    &:hover {
+      background-color: salmon;
+      transform: none;
+      transition: 0.3s;
+    }
+  }
+}
