@@ -1,0 +1,13 @@
+{
+  "name": "Pixit",
+  "description": "Draw me like one of your",
+  "display": "standalone",
+  "icons": { "64": "src/images/stripes.png" },
+  "browser_action": {
+    "default_title": "Pixit",
+    "default_icon": {
+      "32": "src/images/stripes-32.png",
+      "64": "src/images/stripes.png"
+    }
+  }
+}

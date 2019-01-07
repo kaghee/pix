@@ -30,6 +30,7 @@ body {
   .scoreboard {
     height: 200px;
     width: auto;
+    min-width: 100px;
     flex: 1;
     border: 3px solid black;
   }

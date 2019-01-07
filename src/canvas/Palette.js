@@ -43,6 +43,7 @@ export class Palette extends Component {
       for (let j = 0; j < 11; j++) {
         cols.push(
           <button
+            key={this.getColour(j, i)}
             className="clr btn"
             onClick={() => this.setColour(j, i)}
             disabled={this.props.tool === "eraser"}
@@ -52,7 +53,7 @@ export class Palette extends Component {
       }
 
       rows.push(
-        <div className="row">
+        <div className="row" key={i}>
           {cols}
         </div>
       );
