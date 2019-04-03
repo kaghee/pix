@@ -6,8 +6,8 @@ export class MessageList extends Component {
       <ul className="message-list">
         {this.props.messages.map((message) => {
           return (
-            <li key={message.key} className="message">
-              <span className="sender">{message.username}</span>: <span className="text">{message.msg}</span>
+            <li key={message.id} className="message">
+              <span className="sender">{message.senderId}</span>: <span className="text">{message.parts[0].payload.content}</span>
             </li>
           );
         })}

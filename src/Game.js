@@ -50,7 +50,7 @@ export class Game extends Component {
           <Chat
             name={this.props.user}
             messages={this.props.messages}
-            updateMessage={this.props.updateMessage}
+            updateMessage={this.props.sendMessage}
           />
         </div>
       </div>

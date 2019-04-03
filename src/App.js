@@ -32,8 +32,6 @@ export default class App extends Component {
       refreshing: false,
       inChatRoom: false
     };
-    // this.roomId = null;
-    // this.chatWithUser = null;
   }
 
   loginWithUser = (username) => {
@@ -64,69 +62,84 @@ export default class App extends Component {
 
     chatManager.connect().then(currentUser => {
       console.log('Successful connection', currentUser);
-      currentUser.joinRoom({ roomId }).then(room => {
+      this.setState({ currentUser });
+      this.state.currentUser.subscribeToRoomMultipart({
+        roomId,
+        hooks: {
+          onMessage: (message) => {
+            let messages = [...this.state.messages];
+            messages.push(message);
+            this.setState({ messages });
+          }
+        }
+      }).then(room => {
         console.log(`Joined room with ID: ${room.id}`)
-      })
-      .catch(err => {
+        this.state.currentUser.fetchMultipartMessages({
+          roomId,
+          direction: "older",
+          limit: 10,
+        }).then((messages) => {
+          this.setState({ messages });
+        });
+      }).catch(err => {
         console.log(`Error joining room ${someRoomID}: ${err}`)
-      })
+      });
+    }).catch(err => {
+      console.log('Error on connection', err);
+    });
+
+  }
+
+  // onReceiveMessage = (message) => {
+  //   let isCurrentUser = this.currentUser.id == message.sender.id ? true : false;
+  //
+  //   let messages = [...this.state.messages];
+  //   messages.push({
+  //     key: message.id.toString(),
+  //     username: message.sender,
+  //     msg: message.text,
+  //     datetime: message.createdAt,
+  //     isCurrentUser
+  //   });
+  //
+  //   this.setState({
+  //     messages
+  //   });
+  // }
+
+  sendMessage = (message) => {
+    console.log("sendMessage", message);
+    this.state.currentUser.sendSimpleMessage({
+      text: message,
+      roomId
+    }).then((messageId) => {
+      console.log({messageId});
+      this.setState({
+        message: ""
+      });
     })
     .catch(err => {
-      console.log('Error on connection', err);
-    })
-  }
-
-  onReceiveMessage = (message) => {
-    let isCurrentUser = this.currentUser.id == message.sender.id ? true : false;
-
-    let messages = [...this.state.messages];
-    messages.push({
-      key: message.id.toString(),
-      username: message.sender.name,
-      msg: message.text,
-      datetime: message.createdAt,
-      isCurrentUser
+      console.log(`error adding message to room: ${err}`);
     });
-
-    this.setState({
-      messages
-    });
-  }
-
-  sendMessage = () => {
-    if (this.state.message) {
-      this.currentUser.sendMessage({
-        text: this.state.message,
-        roomId
-      }).then((messageId) => {
-        this.setState({
-          message: ""
-        });
-      })
-      .catch(err => {
-        console.log(`error adding message to room: ${err}`);
-      });
-    }
   };
 
-  updateMessage = (message) => {
-    console.log(message);
-    this.setState({
-      message
-    });
-    const messages = [...this.state.messages];
-
-    messages.push({
-      key: 9999,
-      username: this.state.currentUser,
-      msg: message,
-      datetime: message.createdAt,
-      isCurrentUser: true
-    });
-    console.log({messages});
-
-    this.setState({ messages });
-  };
+  // updateMessage = (message) => {
+  //   this.setState({
+  //     message
+  //   });
+  //   const messages = [...this.state.messages];
+  //
+  //   messages.push({
+  //     key: 9999,
+  //     username: this.state.currentUser.name,
+  //     msg: message,
+  //     datetime: message.createdAt,
+  //     isCurrentUser: true
+  //   });
+  //   console.log({messages});
+  //
+  //   this.setState({ messages });
+  // };
 
   render() {
     return (
