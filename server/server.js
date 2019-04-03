@@ -14,6 +14,7 @@ const chatkit = new Chatkit.default({
   key: secretKey,
 })
 
+app.use(express.static(__dirname + '/dist'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -45,7 +46,7 @@ app.post('/users', (req, res) => {
 // })
 
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, err => {
   if (err) {
     console.error(err)

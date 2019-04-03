@@ -77,7 +77,7 @@ export default class App extends Component {
         this.state.currentUser.fetchMultipartMessages({
           roomId,
           direction: "older",
-          limit: 10,
+          limit: 1,
         }).then((messages) => {
           this.setState({ messages });
         });

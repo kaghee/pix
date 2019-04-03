@@ -37,22 +37,20 @@ export class Game extends Component {
   render() {
     return (
       <div className="wrapper">
-        <div className="header logo-es-segitseg"><h1>name: {this.props.user}</h1></div>
-        <div className="container">
-          <div className="scoreboard"></div>
-          <div className="drawing">
-            <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool}/>
-            <div className="toolbar brush">
-              <Palette onColourChange={this.changeColour} tool={this.state.tool} />
-              <Presets onPresetChange={this.changePreset} />
-            </div>
+        <div className="scoreboard"></div>
+        <div className="middle">
+          <div className="title">P I X I T</div>
+          <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool}/>
+          <div className="palette-and-presets-toolbar">
+            <Palette onColourChange={this.changeColour} tool={this.state.tool} />
+            <Presets onPresetChange={this.changePreset} />
           </div>
-          <Chat
-            name={this.props.user}
-            messages={this.props.messages}
-            updateMessage={this.props.sendMessage}
-          />
         </div>
+        <Chat
+          name={this.props.user}
+          messages={this.props.messages}
+          updateMessage={this.props.sendMessage}
+        />
       </div>
     );
   }
