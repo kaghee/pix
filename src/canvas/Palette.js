@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-export class Palette extends Component {
+export default class Palette extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentColour: [0, 0, 0],
-    }
+    };
   }
 
   handleColourChange = (newColour) => {
@@ -18,18 +18,18 @@ export class Palette extends Component {
     this.handleColourChange(colour);
   }
 
-  getColour(row, clr) {
-    const colours = [ [[255,255,255],[0,0,0]],
-                      [[128,128,128],[77,77,77]],
-                      [[255,0,0],[153,0,0]],
-                      [[255,128,0],[153,77,0]],
-                      [[255,221,0],[155,133,0]],
-                      [[0,255,0],[0,153,0]],
-                      [[0,255,255],[0,153,153]],
-                      [[0,64,255],[0,38,153]],
-                      [[128,0,255],[77,0,153]],
-                      [[255,0,191],[153,0,115]],
-                      [[185,99,70],[111,59,42]]
+  getColour = (row, clr) => {
+    const colours = [[[255, 255, 255], [0, 0, 0]],
+                    [[128, 128, 128], [77, 77, 77]],
+                    [[255, 0, 0], [153, 0, 0]],
+                    [[255, 128, 0], [153, 77, 0]],
+                    [[255, 221, 0], [155, 133, 0]],
+                    [[0, 255, 0], [0, 153, 0]],
+                    [[0, 255, 255], [0, 153, 153]],
+                    [[0, 64, 255], [0, 38, 153]],
+                    [[128, 0, 255], [77, 0, 153]],
+                    [[255, 0, 191], [153, 0, 115]],
+                    [[185, 99, 70], [111, 59, 42]]
     ];
 
     return colours[row][clr];
@@ -38,37 +38,38 @@ export class Palette extends Component {
   render() {
     const rows = [];
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i += 1) {
       const cols = [];
-      for (let j = 0; j < 11; j++) {
+      for (let j = 0; j < 11; j += 1) {
         cols.push(
           <button
+            type="button"
             key={this.getColour(j, i)}
             className="clr btn"
             onClick={() => this.setColour(j, i)}
-            disabled={this.props.tool === "eraser"}
+            disabled={this.props.tool === 'eraser'}
             style={{ backgroundColor: `rgb(${this.getColour(j, i)})` }}
-          />
+          />,
         );
       }
 
       rows.push(
         <div className="row" key={i}>
           {cols}
-        </div>
+        </div>,
       );
     }
 
-    let currentColourColour = this.props.tool === "eraser" ? "transparent" : `rgb(${this.state.currentColour})`;
-    let border = this.props.tool === "eraser" ? "3px solid black" : "none";
-    let styles = {
+    const currentColourColour = this.props.tool == 'eraser' ? 'transparent' : `rgb(${this.state.currentColour})`;
+    const border = this.props.tool === 'eraser' ? '3px solid black' : 'none';
+    const styles = {
       backgroundColor: currentColourColour,
-      border
-    }
+      border,
+    };
 
     return (
       <div className="palette">
-      <div className="current-colour" style={styles}></div>
+        <div className="current-colour" style={styles} />
         <div className="colours">
           {rows}
         </div>
