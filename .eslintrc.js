@@ -20,6 +20,7 @@ module.exports = {
         ],
       },
     ],
+    "react/destructuring-assignment": [0],
   },
   "env": {
     "browser": true,

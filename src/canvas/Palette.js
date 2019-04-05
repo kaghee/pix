@@ -20,16 +20,16 @@ export default class Palette extends Component {
 
   getColour = (row, clr) => {
     const colours = [[[255, 255, 255], [0, 0, 0]],
-                    [[128, 128, 128], [77, 77, 77]],
-                    [[255, 0, 0], [153, 0, 0]],
-                    [[255, 128, 0], [153, 77, 0]],
-                    [[255, 221, 0], [155, 133, 0]],
-                    [[0, 255, 0], [0, 153, 0]],
-                    [[0, 255, 255], [0, 153, 153]],
-                    [[0, 64, 255], [0, 38, 153]],
-                    [[128, 0, 255], [77, 0, 153]],
-                    [[255, 0, 191], [153, 0, 115]],
-                    [[185, 99, 70], [111, 59, 42]]
+      [[128, 128, 128], [77, 77, 77]],
+      [[255, 0, 0], [153, 0, 0]],
+      [[255, 128, 0], [153, 77, 0]],
+      [[255, 221, 0], [155, 133, 0]],
+      [[0, 255, 0], [0, 153, 0]],
+      [[0, 255, 255], [0, 153, 153]],
+      [[0, 64, 255], [0, 38, 153]],
+      [[128, 0, 255], [77, 0, 153]],
+      [[255, 0, 191], [153, 0, 115]],
+      [[185, 99, 70], [111, 59, 42]],
     ];
 
     return colours[row][clr];
@@ -60,7 +60,7 @@ export default class Palette extends Component {
       );
     }
 
-    const currentColourColour = this.props.tool == 'eraser' ? 'transparent' : `rgb(${this.state.currentColour})`;
+    const currentColourColour = this.props.tool === 'eraser' ? 'transparent' : `rgb(${this.state.currentColour})`;
     const border = this.props.tool === 'eraser' ? '3px solid black' : 'none';
     const styles = {
       backgroundColor: currentColourColour,

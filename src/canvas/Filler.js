@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 
-export class Filler extends Component {
+export default class Filler extends Component {
   handleFillerClick = (e) => {
     this.props.onClick(e);
   }
 
   render() {
     return (
-      <div className={this.props.className} style={{ backgroundColor: this.props.colour }} onClick={(e) => this.handleFillerClick(e)} />
+      <div
+        className={this.props.className}
+        style={{ backgroundColor: this.props.colour }}
+        onClick={() => {}}
+        onKeyPress={e => this.handleFillerClick(e)}
+        role="button"
+        tabIndex={0}
+      />
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import Game from './Game';
-import { StartScreen } from './StartScreen';
+import StartScreen from './StartScreen';
 import './App.scss';
 
 const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
@@ -30,26 +30,30 @@ export default class App extends Component {
     };
   }
 
-  loginWithUser = (username) => {
+  enterChat = (username) => {
     this.setState({
       username,
     });
-    this.enterChat(username);
+    this.createUser(username);
+    this.connectToChat(username);
   }
 
-  enterChat = (username) => {
+  createUser = (username) => {
     fetch(`${chatServer}/users`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json',
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         username,
       }),
     });
+  }
 
+  connectToChat = (username) => {
     const chatManager = new ChatManager({
       tokenProvider,
       instanceLocator,
@@ -58,20 +62,24 @@ export default class App extends Component {
 
     chatManager.connect().then((currentUser) => {
       console.log('Successful connection', currentUser);
-      this.setState({ currentUser });
+      const players = this.state.players;
+      players.push(currentUser);
+      this.setState({
+        currentUser,
+        players,
+      });
       this.state.currentUser.subscribeToRoomMultipart({
         roomId,
         hooks: {
           onMessage: (message) => {
-            const messages = [...this.state.messages];
+            const { messages } = this.state;
             messages.push(message);
             this.setState({ messages });
-          }
-        }
+          },
+        },
       }).then((room) => {
         console.log(`Joined room with ID: ${room.id}`);
-        const players = this.state.players.concat(room.users);
-        this.setState({ players });
+        this.setState({ players: room.users });
         this.state.currentUser.fetchMultipartMessages({
           roomId,
           direction: 'older',
@@ -91,9 +99,9 @@ export default class App extends Component {
 
   sendMessage = (message) => {
     this.state.currentUser.sendSimpleMessage({
-      text: message,
       roomId,
-    }).then((messageId) => {
+      text: message,
+    }).then(() => {
       this.setState({
         message: '',
       });
@@ -109,7 +117,7 @@ export default class App extends Component {
           exact
           path="/"
           render={props => (
-            <StartScreen {...props} onNameChange={this.loginWithUser} />
+            <StartScreen {...props} onNameChange={this.enterChat} />
           )}
         />
         <Route

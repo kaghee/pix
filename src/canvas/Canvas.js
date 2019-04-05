@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Resetter } from './Resetter';
-import { Filler } from './Filler';
-import { Eraser } from './Eraser';
-import { Brush } from './Brush';
+import Resetter from './Resetter';
+import Filler from './Filler';
+import Eraser from './Eraser';
+import Brush from './Brush';
 
 let ctx;
 
-export class Canvas extends Component {
+export default class Canvas extends Component {
   constructor() {
-    super()
+    super();
+
     this.state = {
       isDrawing: false,
       lastX: 0,
       lastY: 0,
-      offsetTop: 0,
-      offsetLeft: 0,
-      tool: "brush"
-    }
+      tool: 'brush',
+    };
   }
 
   componentDidMount() {
@@ -28,13 +27,11 @@ export class Canvas extends Component {
     canvas.height = 600;
     ctx.strokeStyle = `rgb(${this.props.colour})`;
 
-    let width = this.props.preset;
+    const width = this.props.preset;
 
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
-
-    this.setState({ offsetTop: canvas.offsetTop, offsetLeft: canvas.offsetLeft });
   }
 
   componentDidUpdate(prevProps) {
@@ -43,21 +40,21 @@ export class Canvas extends Component {
     }
 
     if (this.props.preset !== prevProps.preset) {
-      let width = this.props.preset;
+      const width = this.props.preset;
 
       ctx.lineWidth = width < 2 ? width * 4 : width * 8;
     }
   }
 
   handleMouseDown = (e) => {
-    if (this.state.tool === "filler") {
+    if (this.state.tool === 'filler') {
       this.fill(e);
     } else {
       this.setState({
         isDrawing: true,
         lastX: e.clientX,
-        lastY: e.clientY
-      });      
+        lastY: e.clientY,
+      });
     }
   }
 
@@ -66,11 +63,11 @@ export class Canvas extends Component {
 
     ctx.beginPath();
     ctx.moveTo(this.state.lastX - e.currentTarget.offsetLeft, this.state.lastY - e.currentTarget.offsetTop);
-    ctx.lineTo(e.clientX - e.currentTarget.offsetLeft , e.clientY - e.currentTarget.offsetTop);
+    ctx.lineTo(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop);
     ctx.stroke();
     this.setState({
       lastX: e.clientX,
-      lastY: e.clientY
+      lastY: e.clientY,
     });
   }
 
@@ -88,60 +85,59 @@ export class Canvas extends Component {
 
   activateFill = () => {
     this.setState({
-      tool: "filler"
+      tool: 'filler',
     });
-    this.props.onToolChange("filler");
+    this.props.onToolChange('filler');
   }
 
   activateEraser = () => {
     this.setState({
-      tool: "eraser"
+      tool: 'eraser',
     });
-    ctx.strokeStyle = "rgb(255, 255, 255)";
-    this.props.onToolChange("eraser");
+    ctx.strokeStyle = 'rgb(255, 255, 255)';
+    this.props.onToolChange('eraser');
   }
 
   activateBrush = () => {
     this.setState({
-      tool: "brush"
+      tool: 'brush',
     });
     ctx.strokeStyle = `rgb(${this.props.colour})`;
-    this.props.onToolChange("brush");
+    this.props.onToolChange('brush');
   }
 
   fill = (e) => {
-    let currColour = {
+    const currColour = {
       r: this.props.colour[0],
       g: this.props.colour[1],
-      b: this.props.colour[2]
+      b: this.props.colour[2],
     };
 
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgb(0, 0, 0)";
+    ctx.strokeStyle = 'rgb(0, 0, 0)';
     ctx.strokeRect(-1, -1, 902, 602);
 
-    let width = this.props.preset;
+    const width = this.props.preset;
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
 
-    let imageData = ctx.getImageData(0, 0, 900, 600);
+    const imageData = ctx.getImageData(0, 0, 900, 600);
 
-    let startX = e.clientX - e.currentTarget.offsetLeft;
-    let startY = e.clientY - e.currentTarget.offsetTop;
+    const startX = e.clientX - e.currentTarget.offsetLeft;
+    const startY = e.clientY - e.currentTarget.offsetTop;
 
-    let startPos = (startY * 900 + startX) * 4;
+    const startPos = (startY * 900 + startX) * 4;
 
-    let startR = imageData.data[startPos];
-    let startG = imageData.data[startPos + 1];
-    let startB = imageData.data[startPos + 2];
+    const startR = imageData.data[startPos];
+    const startG = imageData.data[startPos + 1];
+    const startB = imageData.data[startPos + 2];
 
-    function shouldBeColoured(pixelPos, startR, startG, startB) {
-
-      let r = imageData.data[pixelPos];
-      let g = imageData.data[pixelPos + 1];
-      let b = imageData.data[pixelPos + 2];
+    function shouldBeColoured(pixelPos, initialR, initialG, initialB) {
+      const r = imageData.data[pixelPos];
+      const g = imageData.data[pixelPos + 1];
+      const b = imageData.data[pixelPos + 2];
 
       // If the current pixel matches the clicked color
-      if (r !== startR && g !== startG && b !== startB) {
+      if (r !== initialR && g !== initialG && b !== initialB) {
         return false;
       }
 
@@ -161,16 +157,15 @@ export class Canvas extends Component {
     }
 
     function traverse(x, y) {
-      let pixelPos = (y * 900 + x) * 4;
-
-      let pixelQueue = [];
+      const pixelPos = (y * 900 + x) * 4;
+      const pixelQueue = [];
 
       colourPixel(pixelPos);
 
       pixelQueue.push(pixelPos);
 
       while (pixelQueue.length) {
-        let newPos = pixelQueue.shift();
+        const newPos = pixelQueue.shift();
 
         if (shouldBeColoured(newPos - 4, startR, startG, startB)) {
           colourPixel(newPos - 4);
@@ -189,29 +184,28 @@ export class Canvas extends Component {
           pixelQueue.push(newPos + 900 * 4);
         }
       }
-      return;
     }
 
     traverse(startX, startY);
 
     ctx.putImageData(imageData, 0, 0);
-
   }
 
   render() {
-    let colour = this.state.tool === "eraser" ? "transparent" : `rgb(${this.props.colour})`;
-    let eraserClassNames = this.state.tool === "eraser" ? "eraser tool selected" : "eraser tool";
-    let brushClassNames = this.state.tool === "brush" ? "brush tool selected" : "brush tool";
-    let fillerClassNames = this.state.tool === "filler" ? "filler tool selected" : "filler tool";
+    const colour = this.state.tool === 'eraser' ? 'transparent' : `rgb(${this.props.colour})`;
+    const eraserClassNames = this.state.tool === 'eraser' ? 'eraser tool selected' : 'eraser tool';
+    const brushClassNames = this.state.tool === 'brush' ? 'brush tool selected' : 'brush tool';
+    const fillerClassNames = this.state.tool === 'filler' ? 'filler tool selected' : 'filler tool';
 
     return (
       <div className="canvas-and-tools-container">
         <canvas
           ref="canvas"
-          onMouseDown={(e) => this.handleMouseDown(e)}
-          onMouseMove={(e) => this.handleMouseMove(e)}
+          onMouseDown={e => this.handleMouseDown(e)}
+          onMouseMove={e => this.handleMouseMove(e)}
           onMouseUp={this.handleMouseUp}
           onMouseOut={this.handleMouseOut}
+          onBlur={this.handleMouseOut}
         />
         <div className="tools-container">
           <div className="tools">

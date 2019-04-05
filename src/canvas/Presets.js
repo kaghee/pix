@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class Presets extends Component {
+export default class Presets extends Component {
   constructor(props) {
     super(props);
     this.state = {

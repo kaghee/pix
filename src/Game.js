@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Scoreboard from './Scoreboard';
-import { Chat } from './chat/Chat';
-import { Canvas } from './canvas/Canvas';
+import Chat from './chat/Chat';
+import Canvas from './canvas/Canvas';
 import Palette from './canvas/Palette';
-import { Presets } from './canvas/Presets';
+import Presets from './canvas/Presets';
 import './App.scss';
 
 export default class Game extends Component {
@@ -38,7 +38,7 @@ export default class Game extends Component {
   render() {
     return (
       <div className="wrapper">
-        <Scoreboard players={this.props.players}/>
+        <Scoreboard players={this.props.players} />
         <div className="middle">
           <div className="title">P I X I T</div>
           <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool} />

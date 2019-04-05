@@ -1,27 +1,14 @@
-import React, { Component } from 'react';
-import { MessageList } from './MessageList';
-import { SendMessageForm } from './SendMessageForm';
+import React from 'react';
+import MessageList from './MessageList';
+import SendMessageForm from './SendMessageForm';
 
-export class Chat extends Component {
-  constructor() {
-    super()
-    this.state = {
-      messages: []
-    }
-  }
-
-  render() {
-    return (
-      <div className="chat">
-        <MessageList messages={this.props.messages} />
-        <SendMessageForm sendMessage={this.props.updateMessage} />
-      </div>
-    )
-  }
+function Chat(props) {
+  return (
+    <div className="chat">
+      <MessageList messages={props.messages} />
+      <SendMessageForm sendMessage={props.updateMessage} />
+    </div>
+  );
 }
-  // sendMessage = (text) => {
-  //   this.props.name.sendMessage({
-  //     text,
-  //     roomId: roomId
-  //   })
-  // }
+
+export default Chat;

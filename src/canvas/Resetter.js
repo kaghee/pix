@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 
-export class Resetter extends Component {
-
+export default class Resetter extends Component {
   handleResetClick = () => {
     this.props.onClick();
   }
 
   render() {
     return (
-      <div className="resetter tool" onClick={this.handleResetClick} />
+      <div
+        className="resetter tool"
+        onClick={() => {}}
+        onKeyPress={this.handleResetClick}
+        role="button"
+        tabIndex={0}
+      />
     );
   }
 }
