@@ -30,6 +30,19 @@ export default class App extends Component {
     };
   }
 
+  componentWillUnmount = () => {
+    window.addEventListener('beforeunload', (e) => {
+      e.preventDefault();
+      this.state.currentUser.leaveRoom({ roomId })
+        .then((room) => {
+          console.log(`Left room with ID: ${room.id}`);
+        })
+        .catch((err) => {
+          console.log('Error leaving room', err);
+        });
+    });
+  }
+
   enterChat = (username) => {
     this.setState({
       username,
@@ -62,19 +75,34 @@ export default class App extends Component {
 
     chatManager.connect().then((currentUser) => {
       console.log('Successful connection', currentUser);
-      const players = this.state.players;
+      const { players } = this.state;
       players.push(currentUser);
       this.setState({
         currentUser,
         players,
       });
-      this.state.currentUser.subscribeToRoomMultipart({
+      currentUser.subscribeToRoomMultipart({
         roomId,
         hooks: {
           onMessage: (message) => {
             const { messages } = this.state;
             messages.push(message);
             this.setState({ messages });
+          },
+          onUserJoined: (user) => {
+            const playersUpdated = this.state.players;
+            playersUpdated.push(user);
+            this.setState({ players: playersUpdated });
+          },
+          onUserLeft: (user) => {
+            console.log("user left");
+            const allPlayers = this.state.players;
+            for (let i = 0; i < allPlayers.length; i += 1) {
+              if (allPlayers[i] === user) {
+                allPlayers.splice(i, 1);
+              }
+            }
+            this.setState({ players: allPlayers });
           },
         },
       }).then((room) => {
