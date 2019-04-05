@@ -9,7 +9,7 @@ export default class Eraser extends Component {
     return (
       <div
         className={this.props.className}
-        onClick={() => {}}
+        onClick={e => this.handleEraserClick(e)}
         onKeyPress={e => this.handleEraserClick(e)}
         role="button"
         tabIndex={0}

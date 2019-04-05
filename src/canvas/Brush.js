@@ -9,7 +9,7 @@ export default class Brush extends Component {
     return (
       <div
         className={this.props.className}
-        onClick={() => {}}
+        onClick={e => this.handleBrushClick(e)}
         onKeyPress={e => this.handleBrushClick(e)}
         role="button"
         tabIndex={0}

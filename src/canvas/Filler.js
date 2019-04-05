@@ -10,7 +10,7 @@ export default class Filler extends Component {
       <div
         className={this.props.className}
         style={{ backgroundColor: this.props.colour }}
-        onClick={() => {}}
+        onClick={e => this.handleFillerClick(e)}
         onKeyPress={e => this.handleFillerClick(e)}
         role="button"
         tabIndex={0}

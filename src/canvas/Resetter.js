@@ -9,7 +9,7 @@ export default class Resetter extends Component {
     return (
       <div
         className="resetter tool"
-        onClick={() => {}}
+        onClick={this.handleResetClick}
         onKeyPress={this.handleResetClick}
         role="button"
         tabIndex={0}

@@ -95,7 +95,7 @@ export default class App extends Component {
             this.setState({ players: playersUpdated });
           },
           onUserLeft: (user) => {
-            console.log("user left");
+            console.log(`user ${user} left`);
             const allPlayers = this.state.players;
             for (let i = 0; i < allPlayers.length; i += 1) {
               if (allPlayers[i] === user) {

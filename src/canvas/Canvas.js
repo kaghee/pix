@@ -21,6 +21,7 @@ export default class Canvas extends Component {
 
   componentDidMount() {
     const canvas = ReactDOM.findDOMNode(this.refs.canvas);
+    console.log({canvas});
 
     ctx = canvas.getContext('2d');
     canvas.width = 900;
