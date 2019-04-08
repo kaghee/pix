@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Resetter from './Resetter';
 import Filler from './Filler';
 import Eraser from './Eraser';
@@ -10,7 +9,7 @@ let ctx;
 export default class Canvas extends Component {
   constructor() {
     super();
-
+    this.display = React.createRef();
     this.state = {
       isDrawing: false,
       lastX: 0,
@@ -20,12 +19,9 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
-    const canvas = ReactDOM.findDOMNode(this.refs.canvas);
-    console.log({canvas});
-
-    ctx = canvas.getContext('2d');
-    canvas.width = 900;
-    canvas.height = 600;
+    ctx = this.display.current.getContext('2d');
+    ctx.canvas.width = 900;
+    ctx.canvas.height = 600;
     ctx.strokeStyle = `rgb(${this.props.colour})`;
 
     const width = this.props.preset;
@@ -62,10 +58,7 @@ export default class Canvas extends Component {
   handleMouseMove = (e) => {
     if (!this.state.isDrawing) return;
 
-    ctx.beginPath();
-    ctx.moveTo(this.state.lastX - e.currentTarget.offsetLeft, this.state.lastY - e.currentTarget.offsetTop);
-    ctx.lineTo(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop);
-    ctx.stroke();
+    this.draw(e);
     this.setState({
       lastX: e.clientX,
       lastY: e.clientY,
@@ -105,6 +98,13 @@ export default class Canvas extends Component {
     });
     ctx.strokeStyle = `rgb(${this.props.colour})`;
     this.props.onToolChange('brush');
+  }
+
+  draw = (e) => {
+    ctx.beginPath();
+    ctx.moveTo(this.state.lastX - e.currentTarget.offsetLeft, this.state.lastY - e.currentTarget.offsetTop);
+    ctx.lineTo(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop);
+    ctx.stroke();
   }
 
   fill = (e) => {
@@ -201,7 +201,7 @@ export default class Canvas extends Component {
     return (
       <div className="canvas-and-tools-container">
         <canvas
-          ref="canvas"
+          ref={this.display}
           onMouseDown={e => this.handleMouseDown(e)}
           onMouseMove={e => this.handleMouseMove(e)}
           onMouseUp={this.handleMouseUp}
