@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SocketContext from './SocketContext';
 import Scoreboard from './Scoreboard';
 import Chat from './chat/Chat';
 import Canvas from './canvas/Canvas';
@@ -21,6 +22,7 @@ export default class Game extends Component {
     this.setState({
       colour: newColour,
     });
+    this.props.socket.emit('changeColour', newColour);
   }
 
   changePreset = (newPreset) => {
@@ -41,9 +43,13 @@ export default class Game extends Component {
         <Scoreboard players={this.props.players} />
         <div className="middle">
           <div className="title">P I X I T</div>
-          <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool} />
+          <SocketContext.Consumer>
+            {socket => <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool} socket={socket} />}
+          </SocketContext.Consumer>
           <div className="palette-and-presets-toolbar">
-            <Palette onColourChange={this.changeColour} tool={this.state.tool} />
+            <SocketContext.Consumer>
+              {socket => <Palette onColourChange={this.changeColour} tool={this.state.tool} socket={socket} />}
+            </SocketContext.Consumer>
             <Presets onPresetChange={this.changePreset} />
           </div>
         </div>

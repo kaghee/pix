@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
+import SocketContext from '../SocketContext';
 import Resetter from './Resetter';
 import Filler from './Filler';
 import Eraser from './Eraser';
 import Brush from './Brush';
 
 let ctx;
-const socket = io('http://localhost:4000');
 
 export default class Canvas extends Component {
   constructor() {
@@ -21,8 +20,12 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
-    socket.on('drawing', (data) => {
+    this.props.socket.on('drawing', (data) => {
       this.draw(data.data.moveToCoords, data.data.lineToCoords);
+    });
+
+    this.props.socket.on('changeColour', (newColour) => {
+      ctx.strokeStyle = `rgb(${newColour})`;
     });
 
     ctx = this.display.current.getContext('2d');
@@ -115,7 +118,7 @@ export default class Canvas extends Component {
     ctx.lineTo(lineToCoords[0], lineToCoords[1]);
     ctx.stroke();
 
-    socket.emit('drawing', {
+    this.props.socket.emit('drawing', {
       moveToCoords,
       lineToCoords,
     });

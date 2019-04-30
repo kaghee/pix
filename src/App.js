@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
+import io from 'socket.io-client';
+import SocketContext from './SocketContext';
 import Game from './Game';
 import StartScreen from './StartScreen';
 import './App.scss';
 
-const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
+const socket = io('http://localhost:4000');
 
+const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
 const instanceId = 'aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
 const roomId = '20051968';
 const chatServer = 'http://localhost:4000';
-
 const tokenProvider = new TokenProvider({
   url: `https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`,
 });
@@ -151,15 +153,18 @@ export default class App extends Component {
         <Route
           path="/play"
           render={props => (
-            <Game
-              {...props}
-              user={this.state.username}
-              players={this.state.players}
-              message={this.state.message}
-              messages={this.state.messages}
-              updateMessage={this.updateMessage}
-              sendMessage={this.sendMessage}
-            />
+            <SocketContext.Provider value={socket}>
+              <Game
+                {...props}
+                user={this.state.username}
+                players={this.state.players}
+                message={this.state.message}
+                messages={this.state.messages}
+                updateMessage={this.updateMessage}
+                sendMessage={this.sendMessage}
+                socket={socket}
+              />
+            </SocketContext.Provider>
           )}
         />
       </div>

@@ -59,4 +59,7 @@ io.on('connection', (socket) => {
   socket.on('drawing', (data) => {
     socket.broadcast.emit('drawing', { data });
   });
+  socket.on('changeColour', (newColour) => {
+    socket.broadcast.emit('changeColour', newColour);
+  });
 });
