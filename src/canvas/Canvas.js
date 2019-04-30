@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SocketContext from '../SocketContext';
 import Resetter from './Resetter';
 import Filler from './Filler';
 import Eraser from './Eraser';

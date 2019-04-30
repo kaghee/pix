@@ -47,9 +47,7 @@ export default class Game extends Component {
             {socket => <Canvas colour={this.state.colour} preset={this.state.preset} onToolChange={this.changeTool} socket={socket} />}
           </SocketContext.Consumer>
           <div className="palette-and-presets-toolbar">
-            <SocketContext.Consumer>
-              {socket => <Palette onColourChange={this.changeColour} tool={this.state.tool} socket={socket} />}
-            </SocketContext.Consumer>
+            <Palette onColourChange={this.changeColour} tool={this.state.tool} />
             <Presets onPresetChange={this.changePreset} />
           </div>
         </div>
