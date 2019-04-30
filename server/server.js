@@ -4,7 +4,22 @@ const cors = require('cors');
 const path = require('path');
 const Chatkit = require('@pusher/chatkit-server');
 
+const http = require('http');
+const socketIo = require('socket.io');
+
+const PORT = process.env.PORT || 4000;
+
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+server.listen(PORT, (err) => {
+  if (err) {
+    console.error(err);
+  } else {
+    console.log(`Running on port ${PORT}`);
+  }
+});
 
 const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
 const secretKey = 'b19e1576-cfd3-467e-bc47-93b00d4b2f60:ftpEZSxYsLn9v7M2kAmI0YT6Lmh5WQXIH78yAisQpSc=';
@@ -40,11 +55,8 @@ app.post('/users', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, (err) => {
-  if (err) {
-    console.error(err);
-  } else {
-    console.log(`Running on port ${PORT}`);
-  }
+io.on('connection', (socket) => {
+  socket.on('drawing', (data) => {
+    socket.broadcast.emit('drawing', { data });
+  });
 });

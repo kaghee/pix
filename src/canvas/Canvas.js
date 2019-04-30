@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import io from 'socket.io-client';
 import Resetter from './Resetter';
 import Filler from './Filler';
 import Eraser from './Eraser';
 import Brush from './Brush';
 
 let ctx;
+const socket = io('http://localhost:4000');
 
 export default class Canvas extends Component {
   constructor() {
@@ -19,6 +21,10 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
+    socket.on('drawing', (data) => {
+      this.draw(data.data.moveToCoords, data.data.lineToCoords);
+    });
+
     ctx = this.display.current.getContext('2d');
     ctx.canvas.width = 900;
     ctx.canvas.height = 600;
@@ -58,7 +64,10 @@ export default class Canvas extends Component {
   handleMouseMove = (e) => {
     if (!this.state.isDrawing) return;
 
-    this.draw(e);
+    const moveToCoords = [this.state.lastX - e.currentTarget.offsetLeft, this.state.lastY - e.currentTarget.offsetTop];
+    const lineToCoords = [e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop];
+
+    this.draw(moveToCoords, lineToCoords);
     this.setState({
       lastX: e.clientX,
       lastY: e.clientY,
@@ -100,11 +109,16 @@ export default class Canvas extends Component {
     this.props.onToolChange('brush');
   }
 
-  draw = (e) => {
+  draw = (moveToCoords, lineToCoords) => {
     ctx.beginPath();
-    ctx.moveTo(this.state.lastX - e.currentTarget.offsetLeft, this.state.lastY - e.currentTarget.offsetTop);
-    ctx.lineTo(e.clientX - e.currentTarget.offsetLeft, e.clientY - e.currentTarget.offsetTop);
+    ctx.moveTo(moveToCoords[0], moveToCoords[1]);
+    ctx.lineTo(lineToCoords[0], lineToCoords[1]);
     ctx.stroke();
+
+    socket.emit('drawing', {
+      moveToCoords,
+      lineToCoords,
+    });
   }
 
   fill = (e) => {
