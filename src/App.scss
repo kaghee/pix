@@ -65,46 +65,39 @@ canvas {
   cursor: url(images/presets/pxbrush1.png) 2.5 2.5, pointer;
 }
 
-.tools-container {
-  position: relative;
-  .tools {
-    position: absolute;
-    right: 8px;
-    top: 3px;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-around;
-    .tool {
-      margin: 10px 2px;
-      width: 55px;
-      height: 55px;
-      border-radius: 3px;
-      background-size: cover;
-      &.resetter {
-        background-image: url("./images/delete.png");
-        &:active {
-          background-image: url("./images/delete_active.png");
-        }
+.tools {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  .tool {
+    margin: 10px 2px;
+    width: 55px;
+    height: 55px;
+    border-radius: 3px;
+    background-size: cover;
+    &.resetter {
+      background-image: url("./images/delete.png");
+      &:active {
+        background-image: url("./images/delete_active.png");
       }
-      &.filler {
-        position: relative;
-        background-image: url("./images/fill.png");
-        &.selected {
-          background-image: url("./images/fill_active.png");
-        }
+    }
+    &.filler {
+      position: relative;
+      background-image: url("./images/fill.png");
+      &.selected {
+        background-image: url("./images/fill_active.png");
       }
-      &.eraser {
-        background-image: url("./images/eraser1.jpg");
-        &.selected {
-          background-image: url("./images/eraser1_active.jpg");
-        }
+    }
+    &.eraser {
+      background-image: url("./images/eraser1.jpg");
+      &.selected {
+        background-image: url("./images/eraser1_active.jpg");
       }
-      &.brush {
-        background-image: url("./images/pencil.jpg");
-        &.selected {
-          background-image: url("./images/pencil_active.png");
-        }
+    }
+    &.brush {
+      background-image: url("./images/pencil.jpg");
+      &.selected {
+        background-image: url("./images/pencil_active.png");
       }
     }
   }
@@ -132,8 +125,6 @@ button {
   .palette {
     display: flex;
     align-items: center;
-    width: 410px;
-    height: 80px;
     margin-left: 8px;
     .current-colour {
       width: 60px;
@@ -141,7 +132,7 @@ button {
       border-radius: 3px;
     }
     .colours {
-      margin: 10px;
+      margin: 8px;
       display: block;
       flex: 1;
       flex-direction: column;
@@ -182,7 +173,7 @@ button {
     align-items: center;
     width: auto;
     height: 80px;
-    // margin-right: 100px;
+    margin-right: 4px;
     .preset {
       width: 55px;
       height: 55px;

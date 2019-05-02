@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import io from 'socket.io-client';
 import SocketContext from './SocketContext';
-import Game from './Game';
+import GameScreen from './GameScreen';
 import StartScreen from './StartScreen';
 import './App.scss';
 
@@ -154,7 +154,7 @@ export default class App extends Component {
           path="/play"
           render={props => (
             <SocketContext.Provider value={socket}>
-              <Game
+              <GameScreen
                 {...props}
                 user={this.state.username}
                 players={this.state.players}

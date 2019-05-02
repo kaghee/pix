@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Palette from './Palette';
+import Presets from './Presets';
 import Resetter from './Resetter';
 import Filler from './Filler';
 import Eraser from './Eraser';
@@ -15,6 +17,8 @@ export default class Canvas extends Component {
       lastX: 0,
       lastY: 0,
       tool: 'brush',
+      colour: [0, 0, 0],
+      preset: 1,
     };
   }
 
@@ -30,25 +34,44 @@ export default class Canvas extends Component {
     ctx = this.display.current.getContext('2d');
     ctx.canvas.width = 900;
     ctx.canvas.height = 600;
-    ctx.strokeStyle = `rgb(${this.props.colour})`;
+    ctx.strokeStyle = `rgb(${this.state.colour})`;
 
-    const width = this.props.preset;
+    const width = this.state.preset;
 
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.colour !== prevProps.colour) {
-      ctx.strokeStyle = `rgb(${this.props.colour})`;
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.colour !== prevState.colour) {
+      ctx.strokeStyle = `rgb(${this.state.colour})`;
     }
 
-    if (this.props.preset !== prevProps.preset) {
-      const width = this.props.preset;
+    if (this.state.preset !== prevState.preset) {
+      const width = this.state.preset;
 
       ctx.lineWidth = width < 2 ? width * 4 : width * 8;
     }
+  }
+
+  changeColour = (newColour) => {
+    this.setState({
+      colour: newColour,
+    });
+    this.props.socket.emit('changeColour', newColour);
+  }
+
+  changePreset = (newPreset) => {
+    this.setState({
+      preset: newPreset,
+    });
+  }
+
+  changeTool = (newTool) => {
+    this.setState({
+      tool: newTool,
+    });
   }
 
   handleMouseDown = (e) => {
@@ -92,7 +115,6 @@ export default class Canvas extends Component {
     this.setState({
       tool: 'filler',
     });
-    this.props.onToolChange('filler');
   }
 
   activateEraser = () => {
@@ -100,15 +122,13 @@ export default class Canvas extends Component {
       tool: 'eraser',
     });
     ctx.strokeStyle = 'rgb(255, 255, 255)';
-    this.props.onToolChange('eraser');
   }
 
   activateBrush = () => {
     this.setState({
       tool: 'brush',
     });
-    ctx.strokeStyle = `rgb(${this.props.colour})`;
-    this.props.onToolChange('brush');
+    ctx.strokeStyle = `rgb(${this.state.colour})`;
   }
 
   draw = (moveToCoords, lineToCoords) => {
@@ -125,16 +145,16 @@ export default class Canvas extends Component {
 
   fill = (e) => {
     const currColour = {
-      r: this.props.colour[0],
-      g: this.props.colour[1],
-      b: this.props.colour[2],
+      r: this.state.colour[0],
+      g: this.state.colour[1],
+      b: this.state.colour[2],
     };
 
     ctx.lineWidth = 1;
     ctx.strokeStyle = 'rgb(0, 0, 0)';
     ctx.strokeRect(-1, -1, 902, 602);
 
-    const width = this.props.preset;
+    const width = this.state.preset;
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
 
     const imageData = ctx.getImageData(0, 0, 900, 600);
@@ -209,7 +229,7 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const colour = this.state.tool === 'eraser' ? 'transparent' : `rgb(${this.props.colour})`;
+    const colour = this.state.tool === 'eraser' ? 'transparent' : `rgb(${this.state.colour})`;
     const eraserClassNames = this.state.tool === 'eraser' ? 'eraser tool selected' : 'eraser tool';
     const brushClassNames = this.state.tool === 'brush' ? 'brush tool selected' : 'brush tool';
     const fillerClassNames = this.state.tool === 'filler' ? 'filler tool selected' : 'filler tool';
@@ -224,7 +244,9 @@ export default class Canvas extends Component {
           onMouseOut={this.handleMouseOut}
           onBlur={this.handleMouseOut}
         />
-        <div className="tools-container">
+        <div className="palette-and-presets-toolbar">
+          <Palette onColourChange={this.changeColour} tool={this.state.tool} />
+          <Presets onPresetChange={this.changePreset} />
           <div className="tools">
             <Resetter onClick={this.reset} />
             <Filler onClick={this.activateFill} colour={colour} className={fillerClassNames} />
