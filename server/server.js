@@ -81,4 +81,8 @@ io.on('connection', (socket) => {
       console.log('User deleted successfully');
     });
   });
+
+  socket.on('newWordToGuess', (word) => {
+    socket.broadcast.emit('newWordIsUp', word);
+  });
 });

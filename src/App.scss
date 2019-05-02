@@ -25,12 +25,21 @@ body {
   grid-column-gap: 10px;
 }
 
-.title {
+.title-and-word-container {
   height: 60px;
   margin-left: 5px;
   font-size: 50px;
   color: #fff;
   font-family: "Cantarell Light", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .current-word {
+    margin-right: 50px;
+    height: 40px;
+    font-size: 30px;
+    letter-spacing: 10px;
+  }
 }
 
 .scoreboard {
