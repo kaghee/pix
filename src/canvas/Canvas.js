@@ -24,17 +24,24 @@ export default class Canvas extends Component {
 
   componentDidMount() {
     this.props.socket.on('drawing', (data) => {
-      this.draw(data.data.moveToCoords, data.data.lineToCoords);
+      this.draw(data.data.moveToCoords, data.data.lineToCoords, true);
     });
 
     this.props.socket.on('changeColour', (newColour) => {
-      ctx.strokeStyle = `rgb(${newColour})`;
+      this.changeColour(newColour, true);
+    });
+
+    this.props.socket.on('changePreset', (newPreset) => {
+      this.changePreset(newPreset, true);
+    });
+
+    this.props.socket.on('reset', () => {
+      this.reset(true);
     });
 
     ctx = this.display.current.getContext('2d');
     ctx.canvas.width = 900;
     ctx.canvas.height = 600;
-    ctx.strokeStyle = `rgb(${this.state.colour})`;
 
     const width = this.state.preset;
 
@@ -43,7 +50,7 @@ export default class Canvas extends Component {
     ctx.lineCap = 'round';
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevState) {
     if (this.state.colour !== prevState.colour) {
       ctx.strokeStyle = `rgb(${this.state.colour})`;
     }
@@ -55,17 +62,22 @@ export default class Canvas extends Component {
     }
   }
 
-  changeColour = (newColour) => {
+  changeColour = (newColour, ws) => {
     this.setState({
       colour: newColour,
     });
-    this.props.socket.emit('changeColour', newColour);
+    if (!ws) {
+      this.props.socket.emit('changeColour', newColour);
+    }
   }
 
-  changePreset = (newPreset) => {
+  changePreset = (newPreset, ws) => {
     this.setState({
       preset: newPreset,
     });
+    if (!ws) {
+      this.props.socket.emit('changePreset', newPreset);
+    }
   }
 
   changeTool = (newTool) => {
@@ -107,8 +119,11 @@ export default class Canvas extends Component {
     this.setState({ isDrawing: false });
   }
 
-  reset = () => {
+  reset = (ws) => {
     ctx.clearRect(0, 0, 900, 600);
+    if (!ws) {
+      this.props.socket.emit('reset');
+    }
   }
 
   activateFill = () => {
@@ -128,19 +143,23 @@ export default class Canvas extends Component {
     this.setState({
       tool: 'brush',
     });
-    ctx.strokeStyle = `rgb(${this.state.colour})`;
   }
 
-  draw = (moveToCoords, lineToCoords) => {
+  draw = (moveToCoords, lineToCoords, ws) => {
     ctx.beginPath();
     ctx.moveTo(moveToCoords[0], moveToCoords[1]);
     ctx.lineTo(lineToCoords[0], lineToCoords[1]);
+    ctx.strokeStyle = `rgb(${this.state.colour})`;
+    ctx.closePath();
+
     ctx.stroke();
 
-    this.props.socket.emit('drawing', {
-      moveToCoords,
-      lineToCoords,
-    });
+    if (!ws) {
+      this.props.socket.emit('drawing', {
+        moveToCoords,
+        lineToCoords,
+      });
+    }
   }
 
   fill = (e) => {
