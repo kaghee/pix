@@ -282,20 +282,35 @@ button {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 450px;
-  height: 250px;
+  width: 700px;
+  height: 350px;
   transform: translate(-50%,-50%);
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
   display: none;
   color: black;
+  border: 1px solid black;
   &.showing {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
+  h2 {
+    cursor: default;
+  }
   .words-container {
     height: 100px;
+    display: flex;
+    margin-top: 30px;
+    .word {
+      // background-image: linear-gradient(to left bottom, rgba(230, 78, 80, 0.7), rgba(249, 212, 35, 0.7));
+      color:black;
+      font-size: 28px;
+      text-shadow: -5px 0 25px rgba(230, 78, 80, 0.7), 5px 0 25px rgba(230, 78, 80, 0.7), 0 -5px 25px rgba(230, 78, 80, 0.7), 0 5px 25px rgba(230, 78, 80, 0.7);
+      padding: 8px 6px;
+      margin: 0 20px;
+      cursor: pointer;
+    }
   }
 }

@@ -5,16 +5,14 @@ const WordsModal = (props) => {
 
   return (
     <div className={`words-modal ${showHideClassName}`}>
-      <h1>Choose a word</h1>
+      <h2>Choose a word</h2>
       <div className="words-container">
         {props.words.map(word => (
-          <span>
+          <span className="word" key={word}>
             {word}
           </span>
         ))}
       </div>
-
-      <button type="button" onClick={props.handleClose}>close</button>
     </div>
   );
 };

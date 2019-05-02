@@ -157,7 +157,6 @@ export default class App extends Component {
                 updateMessage={this.updateMessage}
                 sendMessage={this.sendMessage}
                 socket={socket}
-                startRound={this.startRound}
               />
             </SocketContext.Provider>
           )}

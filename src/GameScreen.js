@@ -22,7 +22,7 @@ export default class GameScreen extends Component {
     return words[Math.floor(Math.random() * words.length)];
   }
 
-  showWordsModal = () => {
+  openWordsModal = () => {
     this.setState({ showingWordsModal: true });
   }
 
@@ -31,6 +31,7 @@ export default class GameScreen extends Component {
   }
 
   startRound = () => {
+    this.openWordsModal();
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
     this.setState({ wordOptions });
   }
@@ -39,7 +40,7 @@ export default class GameScreen extends Component {
     return (
       <div className="wrapper">
         <WordsModal showing={this.state.showingWordsModal} handleClose={this.hideWordsModal} words={this.state.wordOptions} />
-        <button className="start-btn" type="button" onClick={this.showWordsModal}>G O !</button>
+        <button className="start-btn" type="button" onClick={this.startRound}>G O !</button>
         <Scoreboard players={this.props.players} />
         <div className="middle">
           <div className="title">P I X I T</div>
