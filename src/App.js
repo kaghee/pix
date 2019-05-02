@@ -33,6 +33,7 @@ export default class App extends Component {
   }
 
   componentDidMount = () => {
+    // for deleting user upon leaving the page
     window.addEventListener('beforeunload', () => {
       socket.emit('userLeave', this.state.currentUser.id);
     });
@@ -156,6 +157,7 @@ export default class App extends Component {
                 updateMessage={this.updateMessage}
                 sendMessage={this.sendMessage}
                 socket={socket}
+                startRound={this.startRound}
               />
             </SocketContext.Provider>
           )}

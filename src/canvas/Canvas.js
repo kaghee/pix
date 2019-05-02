@@ -35,6 +35,10 @@ export default class Canvas extends Component {
       this.changePreset(newPreset, true);
     });
 
+    // this.props.socket.on('fill', (imageData) => {
+    //   this.executeFill(imageData.data, true);
+    // });
+
     this.props.socket.on('reset', () => {
       this.reset(true);
     });

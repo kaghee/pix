@@ -68,6 +68,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('changePreset', newPreset);
   });
 
+  // socket.on('fill', (imageData) => {
+  //   socket.broadcast.emit('fill', imageData);
+  // });
+
   socket.on('reset', () => {
     socket.broadcast.emit('reset');
   });

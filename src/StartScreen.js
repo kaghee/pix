@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Home.scss';
+import './StartScreen.scss';
 
 export default class StartScreen extends Component {
   submit = (e) => {
