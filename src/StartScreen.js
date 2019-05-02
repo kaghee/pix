@@ -16,9 +16,9 @@ export default class StartScreen extends Component {
       <div className="start-wrapper">
         <div className="start-box">
           <form onSubmit={e => this.submit(e)} className="start-form">
-            <input type="text" className="name" placeholder="Enter your name" />
+            <input type="text" className="name" placeholder="Enter your name" maxLength="14" />
             <div className="rounds">
-              <label>Rounds:</label>
+              <span className="rounds">Rounds:</span>
               <select>
                 <option value="3">3</option>
                 <option value="5">5</option>

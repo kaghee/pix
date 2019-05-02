@@ -12,6 +12,12 @@ body {
   font-family: sans-serif;
 }
 
+.start-wrapper {
+  .rounds {
+    font-size: 20px;
+  }
+}
+
 .wrapper {
   margin: 10px;
   display: grid;
@@ -32,7 +38,7 @@ body {
   max-height: 600px;
   height: auto;
   width: auto;
-  min-width: 100px;
+  min-width: 120px;
   padding-left: 0;
   flex: 1;
   display: flex;

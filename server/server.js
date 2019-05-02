@@ -71,4 +71,10 @@ io.on('connection', (socket) => {
   socket.on('reset', () => {
     socket.broadcast.emit('reset');
   });
+
+  socket.on('userLeave', (userId) => {
+    chatkit.deleteUser({ userId }).then(() => {
+      console.log('User deleted successfully');
+    });
+  });
 });

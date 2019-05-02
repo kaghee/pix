@@ -32,16 +32,9 @@ export default class App extends Component {
     };
   }
 
-  componentWillUnmount = () => {
-    window.addEventListener('beforeunload', (e) => {
-      e.preventDefault();
-      this.state.currentUser.leaveRoom({ roomId })
-        .then((room) => {
-          console.log(`Left room with ID: ${room.id}`);
-        })
-        .catch((err) => {
-          console.log('Error leaving room', err);
-        });
+  componentDidMount = () => {
+    window.addEventListener('beforeunload', () => {
+      socket.emit('userLeave', this.state.currentUser.id);
     });
   }
 

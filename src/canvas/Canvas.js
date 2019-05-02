@@ -162,7 +162,7 @@ export default class Canvas extends Component {
     }
   }
 
-  fill = (e) => {
+  fill = (e, ws) => {
     const currColour = {
       r: this.state.colour[0],
       g: this.state.colour[1],
