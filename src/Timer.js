@@ -5,18 +5,23 @@ export default class Timer extends Component {
     super(props);
 
     this.state = {
-      seconds: this.props.seconds,
+      seconds: 10,
+      countDown: false,
     };
   }
 
   componentDidMount() {
     this.props.socket.on('startCountDown', () => {
       this.startCountDown();
+      this.setState({
+        countDown: true,
+      });
     });
   }
 
   startCountDown = () => {
     this.setState({
+      seconds: 10,
       intervalHandle: setInterval(this.tick, 1000),
     });
   }
@@ -32,7 +37,7 @@ export default class Timer extends Component {
 
   render() {
     return (
-      <div className={this.props.roundInProgress ? 'timer visible' : 'timer hidden'}>
+      <div className={this.state.countDown ? 'timer visible' : 'timer hidden'}>
         <span>{this.state.seconds}</span>
       </div>
     );

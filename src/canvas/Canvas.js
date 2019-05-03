@@ -39,7 +39,7 @@ export default class Canvas extends Component {
     //   this.executeFill(imageData.data, true);
     // });
 
-    this.props.socket.on('reset', () => {
+    this.props.socket.on('resetCanvas', () => {
       this.reset(true);
     });
 
@@ -126,7 +126,7 @@ export default class Canvas extends Component {
   reset = (ws) => {
     ctx.clearRect(0, 0, 900, 600);
     if (!ws) {
-      this.props.socket.emit('reset');
+      this.props.socket.emit('resetCanvas');
     }
   }
 

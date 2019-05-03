@@ -72,14 +72,22 @@ io.on('connection', (socket) => {
   //   socket.broadcast.emit('fill', imageData);
   // });
 
-  socket.on('reset', () => {
-    socket.broadcast.emit('reset');
+  socket.on('resetCanvas', () => {
+    socket.broadcast.emit('resetCanvas');
+  });
+
+  socket.on('resetCanvasForAll', () => {
+    io.emit('resetCanvas');
   });
 
   socket.on('userLeave', (userId) => {
     chatkit.deleteUser({ userId }).then(() => {
       console.log('User deleted successfully');
     });
+  });
+
+  socket.on('userChoosingWord', (user) => {
+    socket.broadcast.emit('userChoosingWord', user);
   });
 
   socket.on('newWordToGuess', (word) => {

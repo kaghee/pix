@@ -21,15 +21,25 @@ export default class GameScreen extends Component {
       currentWord: '',
       roundInProgress: false,
       userRole: '',
-      seconds: 90,
+      userChoosing: '',
     };
   }
 
   componentDidMount() {
     this.props.socket.on('newWordIsUp', (word) => {
+      this.hideRoundOverModal();
+      this.hideWordsModal();
       this.setState({
         userRole: 'guesser',
         currentWord: word,
+      });
+    });
+
+    this.props.socket.on('userChoosingWord', (user) => {
+      this.hideRoundOverModal();
+      this.openWordsModal();
+      this.setState({
+        userChoosing: user,
       });
     });
   }
@@ -62,24 +72,26 @@ export default class GameScreen extends Component {
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
     this.setState({
       wordOptions,
+      userRole: 'drawer',
     });
+    this.props.socket.emit('userChoosingWord', this.props.user);
   }
 
   endRound = () => {
     this.openRoundOverModal();
     this.setState({
       roundInProgress: false,
+      userRole: 'guesser',
     });
   }
 
   handleWordSelect = (word) => {
     this.setState({
       currentWord: word,
-      userRole: 'drawer',
-      seconds: 90,
       roundInProgress: true,
     });
 
+    this.props.socket.emit('resetCanvasForAll');
     this.props.socket.emit('newWordToGuess', word);
     this.props.socket.emit('startCountDown');
     this.hideWordsModal();
@@ -113,6 +125,8 @@ export default class GameScreen extends Component {
               handleClose={this.hideWordsModal}
               words={this.state.wordOptions}
               onSelectWord={this.handleWordSelect}
+              userRole={this.state.userRole}
+              userChoosing={this.state.userChoosing}
             />
             <RoundOverModal
               showing={this.state.showingRoundOverModal}
