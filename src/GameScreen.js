@@ -3,8 +3,8 @@ import SocketContext from './SocketContext';
 import Scoreboard from './Scoreboard';
 import Chat from './chat/Chat';
 import Canvas from './canvas/Canvas';
-import WordsModal from './WordsModal';
-import RoundOverModal from './RoundOverModal';
+import WordsModal from './modals/WordsModal';
+import RoundOverModal from './modals/RoundOverModal';
 import './App.scss';
 import defaultWords from './assets/words/default.txt';
 import WordToGuess from './WordToGuess';
@@ -57,6 +57,7 @@ export default class GameScreen extends Component {
   }
 
   startRound = () => {
+    this.hideRoundOverModal();
     this.openWordsModal();
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
     this.setState({
@@ -66,6 +67,9 @@ export default class GameScreen extends Component {
 
   endRound = () => {
     this.openRoundOverModal();
+    this.setState({
+      roundInProgress: false,
+    });
   }
 
   handleWordSelect = (word) => {

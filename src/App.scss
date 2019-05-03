@@ -314,9 +314,14 @@ button {
   border-radius: 4px;
   color: black;
   border: 1px solid black;
-  display: none;
+  opacity: 0;
+  transform: translateY(-2000px) translateZ(0);
+  // transition: opacity .3s ease 0s, transform 0s linear .9s;
   &.showing {
     display: flex;
+    opacity: 1;
+    transform: translateY(0px);
+    transition: top 0s linear 0s, opacity .3s ease .01s;
     flex-direction: column;
     justify-content: center;
     align-items: center;
