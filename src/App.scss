@@ -34,11 +34,23 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .current-word {
-    margin-right: 50px;
+  .round-info {
+    display: flex;
+    align-items: center;
     height: 40px;
-    font-size: 30px;
-    letter-spacing: 10px;
+    .current-word {
+      font-size: 30px;
+      margin-right: 20px;
+      letter-spacing: 10px;
+    }
+    .timer {
+      width: 50px;
+      font-size: 40px;
+      font-weight: bold;
+      &.hidden {
+        visibility: hidden;
+      }
+    }
   }
 }
 
@@ -81,6 +93,9 @@ body {
   margin: 10px;
   background-color: darkOrange;
   border-radius: 2px;
+  &.hidden {
+    display: none;
+  }
   &:hover {
     background-color: deepPink;
     transform: scale(1.1);

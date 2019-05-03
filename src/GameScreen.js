@@ -7,6 +7,7 @@ import WordsModal from './WordsModal';
 import './App.scss';
 import defaultWords from './assets/words/default.txt';
 import WordToGuess from './WordToGuess';
+import Timer from './Timer';
 
 export default class GameScreen extends Component {
   constructor(props) {
@@ -16,12 +17,18 @@ export default class GameScreen extends Component {
       showingWordsModal: false,
       wordOptions: [],
       currentWord: '',
+      roundInProgress: false,
+      userRole: '',
+      seconds: 91,
     };
   }
 
   componentDidMount() {
     this.props.socket.on('newWordIsUp', (word) => {
-      
+      this.setState({
+        userRole: 'guesser',
+        currentWord: word,
+      });
     });
   }
 
@@ -41,18 +48,36 @@ export default class GameScreen extends Component {
   startRound = () => {
     this.openWordsModal();
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
-    this.setState({ wordOptions });
+    this.setState({
+      wordOptions,
+      roundInProgress: true,
+    });
   }
 
   handleWordSelect = (word) => {
     this.setState({
       currentWord: word,
+      userRole: 'drawer',
+      seconds: 90,
     });
-    console.log(word);
 
     this.props.socket.emit('newWordToGuess', word);
-
     this.hideWordsModal();
+    this.startCountDown();
+  }
+
+  startCountDown = () => {
+    this.setState({
+      intervalHandle: setInterval(this.tick, 1000),
+    });
+  }
+
+  tick = () => {
+    this.setState(prevState => ({ seconds: prevState.seconds - 1 }));
+
+    if (this.state.seconds === 0) {
+      clearInterval(this.state.intervalHandle);
+    }
   }
 
   render() {
@@ -64,12 +89,15 @@ export default class GameScreen extends Component {
           words={this.state.wordOptions}
           onSelectWord={this.handleWordSelect}
         />
-        <button className="start-btn" type="button" onClick={this.startRound}>G O !</button>
+        <button className={this.state.roundInProgress ? 'start-btn hidden' : 'start-btn'} type="button" onClick={this.startRound}>G O !</button>
         <Scoreboard players={this.props.players} />
         <div className="middle">
           <div className="title-and-word-container">
             <span>P I X I T</span>
-            <WordToGuess word={this.state.currentWord} currentUser={this.props.user} />
+            <div className="round-info">
+              <WordToGuess word={this.state.currentWord} userRole={this.state.userRole} />
+              <Timer seconds={this.state.seconds} />
+            </div>
           </div>
           <SocketContext.Consumer>
             {socket => <Canvas socket={socket} />}

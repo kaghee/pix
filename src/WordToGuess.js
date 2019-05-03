@@ -1,31 +1,16 @@
 import React, { Component } from 'react';
 
 export default class WordToGuess extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentWord: ''
-    }
-  }
-  
-  componentDidUpdate(prevProps) {
-    if (this.props.word !== prevProps.word) {
-      this.setState({
-        currentWord: this.props.word
-      });
-    }
-  }
-
   render() {
-    const dummy = this.state.currentWord.split("").map((letter) => "_");
-    console.log(this.props.user, this.props.currentUser)
-    const wordToDisplay = this.props.user === this.props.currentUser ? this.state.currentWord : dummy;
-    
+    console.log(this.props.word, this.props.userRole);
+    const dummy = this.props.word.split('').map(letter => '_');
+    const wordToDisplay = this.props.userRole === 'drawer' ? this.props.word : dummy;
+
+
     return (
       <div className="current-word">
         {wordToDisplay}
       </div>
-    )
+    );
   }
 }
