@@ -85,4 +85,8 @@ io.on('connection', (socket) => {
   socket.on('newWordToGuess', (word) => {
     socket.broadcast.emit('newWordIsUp', word);
   });
+
+  socket.on('startCountDown', () => {
+    io.emit('startCountDown');
+  });
 });

@@ -62,22 +62,8 @@ export default class GameScreen extends Component {
     });
 
     this.props.socket.emit('newWordToGuess', word);
+    this.props.socket.emit('startCountDown');
     this.hideWordsModal();
-    this.startCountDown();
-  }
-
-  startCountDown = () => {
-    this.setState({
-      intervalHandle: setInterval(this.tick, 1000),
-    });
-  }
-
-  tick = () => {
-    this.setState(prevState => ({ seconds: prevState.seconds - 1 }));
-
-    if (this.state.seconds === 0) {
-      clearInterval(this.state.intervalHandle);
-    }
   }
 
   render() {
@@ -96,7 +82,9 @@ export default class GameScreen extends Component {
             <span>P I X I T</span>
             <div className="round-info">
               <WordToGuess word={this.state.currentWord} userRole={this.state.userRole} />
-              <Timer seconds={this.state.seconds} />
+              <SocketContext.Consumer>
+                {socket => <Timer seconds={this.state.seconds} socket={socket} />}
+              </SocketContext.Consumer>
             </div>
           </div>
           <SocketContext.Consumer>
