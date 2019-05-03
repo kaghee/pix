@@ -4,6 +4,7 @@ import Scoreboard from './Scoreboard';
 import Chat from './chat/Chat';
 import Canvas from './canvas/Canvas';
 import WordsModal from './WordsModal';
+import RoundOverModal from './RoundOverModal';
 import './App.scss';
 import defaultWords from './assets/words/default.txt';
 import WordToGuess from './WordToGuess';
@@ -15,6 +16,7 @@ export default class GameScreen extends Component {
 
     this.state = {
       showingWordsModal: false,
+      showingRoundOverModal: false,
       wordOptions: [],
       currentWord: '',
       roundInProgress: false,
@@ -34,7 +36,8 @@ export default class GameScreen extends Component {
 
   getRandomWord = () => {
     const words = defaultWords.split('\n');
-    return words[Math.floor(Math.random() * words.length)];
+    const random = Math.floor(Math.random() * words.length);
+    return words.slice(random, random + 1)[0];
   }
 
   openWordsModal = () => {
@@ -45,12 +48,24 @@ export default class GameScreen extends Component {
     this.setState({ showingWordsModal: false });
   }
 
+  openRoundOverModal = () => {
+    this.setState({ showingRoundOverModal: true });
+  }
+
+  hideRoundOverModal = () => {
+    this.setState({ showingRoundOverModal: false });
+  }
+
   startRound = () => {
     this.openWordsModal();
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
     this.setState({
       wordOptions,
     });
+  }
+
+  endRound = () => {
+    this.openRoundOverModal();
   }
 
   handleWordSelect = (word) => {
@@ -69,12 +84,6 @@ export default class GameScreen extends Component {
   render() {
     return (
       <div className="wrapper">
-        <WordsModal
-          showing={this.state.showingWordsModal}
-          handleClose={this.hideWordsModal}
-          words={this.state.wordOptions}
-          onSelectWord={this.handleWordSelect}
-        />
         <button className={this.state.roundInProgress ? 'start-btn hidden' : 'start-btn'} type="button" onClick={this.startRound}>G O !</button>
         <Scoreboard players={this.props.players} />
         <div className="middle">
@@ -83,13 +92,32 @@ export default class GameScreen extends Component {
             <div className="round-info">
               <WordToGuess word={this.state.currentWord} userRole={this.state.userRole} />
               <SocketContext.Consumer>
-                {socket => <Timer seconds={this.state.seconds} roundInProgress={this.state.roundInProgress} socket={socket} />}
+                {socket => (
+                  <Timer
+                    seconds={this.state.seconds}
+                    roundInProgress={this.state.roundInProgress}
+                    endCountDown={this.endRound}
+                    socket={socket}
+                  />
+                )}
               </SocketContext.Consumer>
             </div>
           </div>
-          <SocketContext.Consumer>
-            {socket => <Canvas socket={socket} />}
-          </SocketContext.Consumer>
+          <div className="canvas-wrapper">
+            <WordsModal
+              showing={this.state.showingWordsModal}
+              handleClose={this.hideWordsModal}
+              words={this.state.wordOptions}
+              onSelectWord={this.handleWordSelect}
+            />
+            <RoundOverModal
+              showing={this.state.showingRoundOverModal}
+              word={this.state.currentWord}
+            />
+            <SocketContext.Consumer>
+              {socket => <Canvas socket={socket} />}
+            </SocketContext.Consumer>
+          </div>
         </div>
         <Chat
           name={this.props.currentUser}
