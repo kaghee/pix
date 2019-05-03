@@ -258,7 +258,7 @@ export default class Canvas extends Component {
     const fillerClassNames = this.state.tool === 'filler' ? 'filler tool selected' : 'filler tool';
 
     return (
-      <div className="canvas-and-tools-container">
+      <div className={`canvas-and-tools-container ${this.props.canDraw ? 'enabled' : 'disabled'}`}>
         <canvas
           ref={this.display}
           onMouseDown={e => this.handleMouseDown(e)}

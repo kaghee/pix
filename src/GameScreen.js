@@ -22,6 +22,7 @@ export default class GameScreen extends Component {
       roundInProgress: false,
       userRole: '',
       userChoosing: '',
+      canDraw: false,
     };
   }
 
@@ -82,6 +83,7 @@ export default class GameScreen extends Component {
     this.setState({
       roundInProgress: false,
       userRole: 'guesser',
+      canDraw: false,
     });
   }
 
@@ -89,6 +91,7 @@ export default class GameScreen extends Component {
     this.setState({
       currentWord: word,
       roundInProgress: true,
+      canDraw: true,
     });
 
     this.props.socket.emit('resetCanvasForAll');
@@ -133,7 +136,7 @@ export default class GameScreen extends Component {
               word={this.state.currentWord}
             />
             <SocketContext.Consumer>
-              {socket => <Canvas socket={socket} />}
+              {socket => <Canvas canDraw={this.state.canDraw} socket={socket} />}
             </SocketContext.Consumer>
           </div>
         </div>

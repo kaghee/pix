@@ -106,11 +106,16 @@ body {
 .canvas-wrapper {
   height: 600px;
   width: 900px;
-  canvas {
-    height: 600px;
-    width: 900px;
-    background: #fff;
-    cursor: url(assets/images/presets/pxbrush1.png) 2.5 2.5, pointer;
+  .canvas-and-tools-container {
+    &.disabled {
+      pointer-events: none;
+    }
+    canvas {
+      height: 600px;
+      width: 900px;
+      background: #fff;
+      cursor: url(assets/images/presets/pxbrush1.png) 2.5 2.5, pointer;
+    }
   }
 }
 
