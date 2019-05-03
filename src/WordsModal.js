@@ -8,7 +8,14 @@ const WordsModal = (props) => {
       <h2>Choose a word</h2>
       <div className="words-container">
         {props.words.map(word => (
-          <span className="word" key={word} onClick={() => props.onSelectWord(word)}>
+          <span
+            className="word"
+            key={word}
+            role="button"
+            onClick={() => props.onSelectWord(word)}
+            onKeyPress={() => props.onSelectWord(word)}
+            tabIndex={0}
+          >
             {word}
           </span>
         ))}

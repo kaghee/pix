@@ -19,7 +19,7 @@ export default class GameScreen extends Component {
       currentWord: '',
       roundInProgress: false,
       userRole: '',
-      seconds: 91,
+      seconds: 90,
     };
   }
 
@@ -50,7 +50,6 @@ export default class GameScreen extends Component {
     const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
     this.setState({
       wordOptions,
-      roundInProgress: true,
     });
   }
 
@@ -59,6 +58,7 @@ export default class GameScreen extends Component {
       currentWord: word,
       userRole: 'drawer',
       seconds: 90,
+      roundInProgress: true,
     });
 
     this.props.socket.emit('newWordToGuess', word);
@@ -83,7 +83,7 @@ export default class GameScreen extends Component {
             <div className="round-info">
               <WordToGuess word={this.state.currentWord} userRole={this.state.userRole} />
               <SocketContext.Consumer>
-                {socket => <Timer seconds={this.state.seconds} socket={socket} />}
+                {socket => <Timer seconds={this.state.seconds} roundInProgress={this.state.roundInProgress} socket={socket} />}
               </SocketContext.Consumer>
             </div>
           </div>

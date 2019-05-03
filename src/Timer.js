@@ -42,7 +42,7 @@ export default class Timer extends Component {
 
   render() {
     return (
-      <div className={this.state.seconds > 90 ? 'timer hidden' : 'timer visible'}>
+      <div className={this.props.roundInProgress ? 'timer visible' : 'timer hidden'}>
         <span>{this.state.seconds}</span>
       </div>
     );
