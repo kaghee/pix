@@ -33,6 +33,7 @@ export default class GameScreen extends Component {
       this.setState({
         userRole: 'guesser',
         currentWord: word,
+        roundInProgress: true,
       });
     });
 
@@ -45,10 +46,20 @@ export default class GameScreen extends Component {
     });
   }
 
-  getRandomWord = () => {
+  getRandomWords = () => {
     const words = defaultWords.split('\n');
-    const random = Math.floor(Math.random() * words.length);
-    return words.slice(random, random + 1)[0];
+    const results = [];
+    function getWord() {
+      const random = Math.floor(Math.random() * words.length);
+      return words.slice(random, random + 1)[0];
+    }
+    for (let i = 0; i < 3; i += 1) {
+      const wordToAdd = getWord();
+      if (!results.includes(wordToAdd)) {
+        results.push(wordToAdd);
+      }
+    }
+    return results;
   }
 
   openWordsModal = () => {
@@ -70,7 +81,7 @@ export default class GameScreen extends Component {
   startRound = () => {
     this.hideRoundOverModal();
     this.openWordsModal();
-    const wordOptions = [this.getRandomWord(), this.getRandomWord(), this.getRandomWord()];
+    const wordOptions = this.getRandomWords();
     this.setState({
       wordOptions,
       userRole: 'drawer',
@@ -109,7 +120,11 @@ export default class GameScreen extends Component {
           <div className="title-and-word-container">
             <span>P I X I T</span>
             <div className="round-info">
-              <WordToGuess word={this.state.currentWord} userRole={this.state.userRole} />
+              <WordToGuess
+                word={this.state.currentWord}
+                userRole={this.state.userRole}
+                roundInProgress={this.state.roundInProgress}
+              />
               <SocketContext.Consumer>
                 {socket => (
                   <Timer
