@@ -11,6 +11,14 @@ export default class Chat extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.socket.on('endRound', () => {
+      this.setState({
+        canGuess: true,
+      });
+    });
+  }
+
   handleCorrectGuess = () => {
     this.setState({
       canGuess: false,

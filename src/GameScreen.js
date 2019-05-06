@@ -96,6 +96,7 @@ export default class GameScreen extends Component {
       userRole: 'guesser',
       canDraw: false,
     });
+    this.props.socket.emit('endRound');
   }
 
   handleWordSelect = (word) => {
@@ -162,6 +163,7 @@ export default class GameScreen extends Component {
               messages={this.props.messages}
               updateMessage={this.props.sendMessage}
               wordToGuess={this.state.currentWord}
+              canGuess={this.state.canGuess}
               socket={socket}
             />
           )

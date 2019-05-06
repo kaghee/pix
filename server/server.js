@@ -101,4 +101,8 @@ io.on('connection', (socket) => {
   socket.on('incomingCorrectGuess', (user) => {
     io.emit('incomingCorrectGuess', user);
   });
+
+  socket.on('endRound', (user) => {
+    io.emit('endRound', user);
+  });
 });
