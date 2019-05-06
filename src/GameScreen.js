@@ -155,11 +155,18 @@ export default class GameScreen extends Component {
             </SocketContext.Consumer>
           </div>
         </div>
-        <Chat
-          name={this.props.currentUser}
-          messages={this.props.messages}
-          updateMessage={this.props.sendMessage}
-        />
+        <SocketContext.Consumer>
+          {socket => (
+            <Chat
+              name={this.props.user}
+              messages={this.props.messages}
+              updateMessage={this.props.sendMessage}
+              wordToGuess={this.state.currentWord}
+              socket={socket}
+            />
+          )
+        }
+        </SocketContext.Consumer>
       </div>
     );
   }

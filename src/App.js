@@ -37,6 +37,10 @@ export default class App extends Component {
     window.addEventListener('beforeunload', () => {
       socket.emit('userLeave', this.state.currentUser.id);
     });
+
+    socket.on('incomingCorrectGuess', (user) => {
+      // add points...
+    });
   }
 
   enterChat = (username) => {

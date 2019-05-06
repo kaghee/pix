@@ -292,6 +292,10 @@ button {
     &:nth-child(-n+10) {
       display: block;
     }
+    &.winner {
+      background-color: rgb(155, 244, 66);
+      font-weight: bold;
+    }
   }
 }
 

@@ -97,4 +97,8 @@ io.on('connection', (socket) => {
   socket.on('startCountDown', () => {
     io.emit('startCountDown');
   });
+
+  socket.on('incomingCorrectGuess', (user) => {
+    io.emit('incomingCorrectGuess', user);
+  });
 });

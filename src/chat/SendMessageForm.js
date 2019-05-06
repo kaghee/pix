@@ -16,7 +16,12 @@ export default class SendMessageForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.sendMessage(this.state.message);
+    if (this.state.message === this.props.wordToGuess) {
+      this.props.onCorrectGuess();
+      this.props.sendMessage(`SYSTEM ${this.props.name} has guessed the word!`);
+    } else {
+      this.props.sendMessage(this.state.message);
+    }
     this.setState({
       message: '',
     });
@@ -33,6 +38,7 @@ export default class SendMessageForm extends Component {
           value={this.state.message}
           placeholder="Type your guess here..."
           type="text"
+          disabled={!this.props.canGuess}
         />
       </form>
     );
