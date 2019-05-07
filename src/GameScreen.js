@@ -23,16 +23,18 @@ export default class GameScreen extends Component {
       userRole: '',
       userChoosing: '',
       canDraw: false,
+      drawersWord: '',
+      wordWas: '',
     };
   }
 
   componentDidMount() {
-    this.props.socket.on('newWordIsUp', (word) => {
+    this.props.socket.on('newWordIsUp', (dummy) => {
       this.hideRoundOverModal();
       this.hideWordsModal();
       this.setState({
         userRole: 'guesser',
-        currentWord: word,
+        currentWord: dummy,
         roundInProgress: true,
       });
     });
@@ -42,6 +44,12 @@ export default class GameScreen extends Component {
       this.openWordsModal();
       this.setState({
         userChoosing: user,
+      });
+    });
+
+    this.props.socket.on('endRound', (user, word) => {
+      this.setState({
+        wordWas: word,
       });
     });
   }
@@ -90,20 +98,20 @@ export default class GameScreen extends Component {
   }
 
   endRound = () => {
+    this.props.socket.emit('endRound');
     this.openRoundOverModal();
     this.setState({
       roundInProgress: false,
       userRole: 'guesser',
       canDraw: false,
     });
-    this.props.socket.emit('endRound');
   }
 
   handleWordSelect = (word) => {
     this.setState({
-      currentWord: word,
       roundInProgress: true,
       canDraw: true,
+      drawersWord: word,
     });
 
     this.props.socket.emit('resetCanvasForAll');
@@ -123,6 +131,7 @@ export default class GameScreen extends Component {
             <div className="round-info">
               <WordToGuess
                 word={this.state.currentWord}
+                drawersWord={this.state.drawersWord}
                 userRole={this.state.userRole}
                 roundInProgress={this.state.roundInProgress}
               />
@@ -149,7 +158,7 @@ export default class GameScreen extends Component {
             />
             <RoundOverModal
               showing={this.state.showingRoundOverModal}
-              word={this.state.currentWord}
+              word={this.state.wordWas}
             />
             <SocketContext.Consumer>
               {socket => <Canvas canDraw={this.state.canDraw} socket={socket} />}
@@ -163,7 +172,6 @@ export default class GameScreen extends Component {
               messages={this.props.messages}
               updateMessage={this.props.sendMessage}
               wordToGuess={this.state.currentWord}
-              canGuess={this.state.canGuess}
               socket={socket}
             />
           )

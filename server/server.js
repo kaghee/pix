@@ -13,6 +13,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
+let currentWord = '';
+
 server.listen(PORT, (err) => {
   if (err) {
     console.error(err);
@@ -80,7 +82,12 @@ io.on('connection', (socket) => {
     io.emit('resetCanvas');
   });
 
-  socket.on('userLeave', (userId) => {
+  socket.on('userLeave', (userId, roomId) => {
+    chatkit.removeUsersFromRoom({
+      roomId,
+      userIds: [userId],
+    }).catch(err => console.error(err));
+
     chatkit.deleteUser({ userId }).then(() => {
       console.log('User deleted successfully');
     });
@@ -91,7 +98,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('newWordToGuess', (word) => {
-    socket.broadcast.emit('newWordIsUp', word);
+    currentWord = word;
+    const dummy = word.split('').map(() => '_').join('');
+    socket.broadcast.emit('newWordIsUp', dummy);
   });
 
   socket.on('startCountDown', () => {
@@ -103,6 +112,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('endRound', (user) => {
-    io.emit('endRound', user);
+    io.emit('endRound', user, currentWord);
   });
 });

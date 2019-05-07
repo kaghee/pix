@@ -5,7 +5,7 @@ const RoundOverModal = (props) => {
 
   return (
     <div className={`round-over-modal ${showHideClassName}`}>
-      <h2>{`The word was: ${props.word}`}</h2>
+      <h2>The word was: <span className="word-was">{props.word}</span></h2>
     </div>
   );
 };

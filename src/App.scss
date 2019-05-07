@@ -319,16 +319,15 @@ button {
   position: absolute;
   height: 600px;
   width: 900px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   border-radius: 4px;
   color: black;
   border: 1px solid black;
   opacity: 0;
   transform: translateY(-2000px) translateZ(0);
-  // transition: opacity .3s ease 0s, transform 0s linear .9s;
+  font-family: "Cantarell Light", sans-serif;
   &.showing {
     display: flex;
-    opacity: 1;
     transform: translateY(0px);
     transition: top 0s linear 0s, opacity .3s ease .01s;
     flex-direction: column;
@@ -352,5 +351,9 @@ button {
       margin: 0 20px;
       cursor: pointer;
     }
+  }
+  .word-was {
+    font-weight: bold;
+    font-size: 28px;
   }
 }

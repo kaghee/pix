@@ -35,7 +35,7 @@ export default class App extends Component {
   componentDidMount = () => {
     // for deleting user upon leaving the page
     window.addEventListener('beforeunload', () => {
-      socket.emit('userLeave', this.state.currentUser.id);
+      socket.emit('userLeave', this.state.currentUser.id, roomId);
     });
 
     socket.on('incomingCorrectGuess', (user) => {
