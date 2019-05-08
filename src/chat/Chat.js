@@ -19,11 +19,8 @@ export default class Chat extends Component {
     });
   }
 
-  handleCorrectGuess = () => {
-    this.setState({
-      canGuess: false,
-    });
-    this.props.socket.emit('incomingCorrectGuess', this.props.name);
+  handleGuess = (guess) => {
+    this.props.socket.emit('incomingGuess', this.props.name, guess);
   }
 
   render() {
@@ -35,7 +32,7 @@ export default class Chat extends Component {
           name={this.props.name}
           wordToGuess={this.props.wordToGuess}
           canGuess={this.state.canGuess}
-          onCorrectGuess={this.handleCorrectGuess}
+          onGuess={this.handleGuess}
         />
       </div>
     );

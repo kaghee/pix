@@ -107,11 +107,24 @@ io.on('connection', (socket) => {
     io.emit('startCountDown');
   });
 
-  socket.on('incomingCorrectGuess', (user) => {
-    io.emit('incomingCorrectGuess', user);
+  socket.on('incomingGuess', (user, word) => {
+    if (word === currentWord) {
+      socket.broadcast.emit('userGuessedTheWord', user);
+    } else {
+      const chatkitUser = chatkit.getUser({ id: user });
+      socket.broadcast.emit('incomingIncorrectGuess', chatkitUser, word);
+    }
   });
 
   socket.on('endRound', (user) => {
     io.emit('endRound', user, currentWord);
+  });
+
+  socket.on('userLeft', async (user) => {
+    const room = await chatkit.getRoom({
+      roomId: '20051968',
+    });
+    const dummyUser = room.member_user_ids[0];
+    io.emit('userLeft', user, dummyUser);
   });
 });

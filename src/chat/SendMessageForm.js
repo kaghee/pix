@@ -16,12 +16,7 @@ export default class SendMessageForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    if (this.state.message === this.props.wordToGuess) {
-      this.props.onCorrectGuess();
-      this.props.sendMessage(`SYSTEM ${this.props.name} has guessed the word!`);
-    } else {
-      this.props.sendMessage(this.state.message);
-    }
+    this.props.onGuess(this.state.message);
     this.setState({
       message: '',
     });

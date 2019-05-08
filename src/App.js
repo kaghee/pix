@@ -38,8 +38,16 @@ export default class App extends Component {
       socket.emit('userLeave', this.state.currentUser.id, roomId);
     });
 
-    socket.on('incomingCorrectGuess', (user) => {
-      // add points...
+    socket.on('incomingIncorrectGuess', (user, word) => {
+      this.sendMessage(user, word);
+    });
+
+    socket.on('userGuessedTheWord', (user) => {
+      this.sendMessage(user, 'SYSTEM correct guess');
+    });
+
+    socket.on('userLeft', (user, dummyUser) => {
+      this.sendMessage(dummyUser, 'SYSTEM user left');
     });
   }
 
@@ -95,7 +103,7 @@ export default class App extends Component {
             this.setState({ players: playersUpdated });
           },
           onUserLeft: (user) => {
-            console.log(`user ${user} left`);
+            socket.emit('userLeft', user.id);
             const allPlayers = this.state.players;
             for (let i = 0; i < allPlayers.length; i += 1) {
               if (allPlayers[i] === user) {
@@ -125,7 +133,7 @@ export default class App extends Component {
     });
   }
 
-  sendMessage = (message) => {
+  sendMessage = (user, message) => {
     this.state.currentUser.sendSimpleMessage({
       roomId,
       text: message,
