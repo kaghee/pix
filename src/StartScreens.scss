@@ -19,7 +19,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  input, button, select, label {
+  input, button, select, .label {
     border: none;
     border-radius: 3px;
     font-size: 20px;
@@ -43,14 +43,28 @@
         width: auto;
       }
     }
-  }
-  .btn.play {
-    width: 200px;
-    box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
-    &:hover {
-      background-color: lighten(salmon, 15%);
-      transform: none;
-      transition: 0.3s;
+    .round-length {
+      input {
+        width: 63px;
+      }
     }
   }
+  .button-area {
+    display: flex;
+    width: 380px;
+    justify-content: space-between;
+    .btn {
+      width: 180px;
+      box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
+      &:hover {
+        background-color: lighten(salmon, 15%);
+        transform: none;
+        transition: 0.3s;
+      }
+    }
+  }
+}
+
+.btn:disabled {
+  pointer-events: none;
 }

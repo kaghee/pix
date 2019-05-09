@@ -43,6 +43,10 @@ app.post('/users', (req, res) => {
   chatkit.createUser({
     id: username,
     name: username,
+    customData: {
+      score: 0,
+      finished: false,
+    },
   })
     .then(() => {
       console.log(`User ${username} created successfully`);
@@ -116,8 +120,8 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('endRound', (user) => {
-    io.emit('endRound', user, currentWord);
+  socket.on('endRound', () => {
+    io.emit('endRound', currentWord);
   });
 
   socket.on('userLeft', async (user) => {
@@ -126,5 +130,9 @@ io.on('connection', (socket) => {
     });
     const dummyUser = room.member_user_ids[0];
     io.emit('userLeft', user, dummyUser);
+  });
+
+  socket.on('roomCreated', (roomId) => {
+    io.emit('newRoom', roomId);
   });
 });

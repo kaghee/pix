@@ -47,7 +47,7 @@ export default class GameScreen extends Component {
       });
     });
 
-    this.props.socket.on('endRound', (user, word) => {
+    this.props.socket.on('endRound', (word) => {
       this.setState({
         wordWas: word,
       });
