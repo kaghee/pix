@@ -30,6 +30,7 @@ export default class App extends Component {
       currentUser: null,
       message: '',
       messages: [],
+      rooms: [],
     };
   }
 
@@ -53,6 +54,14 @@ export default class App extends Component {
 
     socket.on('userJoin', (user) => {
       this.joinRoom(user, defaultRoomId);
+    });
+
+    socket.on('newRoom', (room) => {
+      const { rooms } = this.state;
+      rooms.push(room);
+      this.setState({
+        rooms,
+      });
     });
   }
 
@@ -150,6 +159,9 @@ export default class App extends Component {
         }).then((room) => {
           console.log(`Created room called ${room.name}`, room.id);
           socket.emit('roomCreated', room.id);
+          const { rooms } = this.state;
+          rooms.push(room.id);
+          this.setState({ rooms });
         }).catch((err) => {
           console.log(`Error creating room ${err}`);
         });
@@ -179,7 +191,12 @@ export default class App extends Component {
           exact
           path="/"
           render={props => (
-            <StartScreen {...props} enterChat={this.enterChat} createRoom={this.handleCreateRoom} />
+            <StartScreen
+              {...props}
+              enterChat={this.enterChat}
+              createRoom={this.handleCreateRoom}
+              rooms={this.state.rooms}
+            />
           )}
         />
         <Route

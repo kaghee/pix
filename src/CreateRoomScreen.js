@@ -2,26 +2,6 @@ import React, { Component } from 'react';
 import './StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      name: '',
-    };
-  }
-  // submit = (e) => {
-  //   e.preventDefault();
-  //   const newName = e.target.querySelector('input').value;
-  //
-  //   this.props.onNameChange(newName);
-  //
-  //   this.props.history.push('/play');
-  // }
-
-  componentDidMount() {
-    console.log('name', this.state.name);
-  }
-
   handlePlay = () => {
     this.props.history.push('/play');
   }
