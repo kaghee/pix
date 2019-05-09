@@ -5,7 +5,7 @@ export default class Timer extends Component {
     super(props);
 
     this.state = {
-      seconds: 10,
+      seconds: 80,
       countDown: false,
     };
   }
@@ -21,7 +21,7 @@ export default class Timer extends Component {
 
   startCountDown = () => {
     this.setState({
-      seconds: 10,
+      seconds: 80,
       intervalHandle: setInterval(this.tick, 1000),
     });
   }
