@@ -29,7 +29,13 @@ export default class StartScreen extends Component {
 
   handleJoin = () => {
     console.log('JOIN', this.state.roomName);
-    // this.props.findRoom(this.state.roomName);
+
+    let nameToUse = this.state.name;
+    if (!nameToUse) {
+      const animalsList = animals();
+      nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
+    }
+    this.props.enterChat(nameToUse, this.state.roomName);
   }
 
   getRandomRoomName = () => {
@@ -46,16 +52,16 @@ export default class StartScreen extends Component {
     this.props.history.push('/create');
   }
 
-  handlePlay = () => {
-    let nameToUse = this.state.name;
-    if (!nameToUse) {
-      const animalsList = animals();
-      nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
-    }
-
-    this.props.enterChat(nameToUse, 'default');
-    this.props.history.push('/play');
-  }
+  // handlePlay = () => {
+  //   let nameToUse = this.state.name;
+  //   if (!nameToUse) {
+  //     const animalsList = animals();
+  //     nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
+  //   }
+  //
+  //   this.props.enterChat(nameToUse, 'default');
+  //   this.props.history.push('/play');
+  // }
 
   render() {
     return (

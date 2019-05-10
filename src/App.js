@@ -73,6 +73,10 @@ export default class App extends Component {
     });
   }
 
+  // findRoom = (roomName) => {
+  //   console.log(this.state.currentUser);
+  // }
+
   enterChat = (username, roomToJoin) => {
     this.setState({
       username,
@@ -113,50 +117,54 @@ export default class App extends Component {
       });
       // const roomId = roomToJoin === 'default' ? defaultRoomId : roomToJoin;
 
-      if (roomToJoin === 'default') {
-        currentUser.subscribeToRoomMultipart({
-          roomId: defaultRoomId,
-          hooks: {
-            onMessage: (message) => {
-              const { messages } = this.state;
-              messages.push(message);
-              this.setState({ messages });
-            },
-            onUserJoined: (newUser) => {
-              const playersUpdated = this.state.players;
-              playersUpdated.push(newUser);
-              this.setState({ players: playersUpdated });
-            },
-            onUserLeft: (exUser) => {
-              socket.emit('userLeft', exUser.id);
-              const allPlayers = this.state.players;
-              for (let i = 0; i < allPlayers.length; i += 1) {
-                if (allPlayers[i] === exUser) {
-                  allPlayers.splice(i, 1);
+      let roomId = '';
+
+      if (roomToJoin && roomToJoin !== 'newRoom') {
+        currentUser.getJoinableRooms().then((rooms) => {
+          roomId = rooms.find(rm => rm.name === roomToJoin).id;
+          currentUser.subscribeToRoomMultipart({
+            roomId,
+            hooks: {
+              onMessage: (message) => {
+                const { messages } = this.state;
+                messages.push(message);
+                this.setState({ messages });
+              },
+              onUserJoined: (newUser) => {
+                const playersUpdated = this.state.players;
+                playersUpdated.push(newUser);
+                this.setState({ players: playersUpdated });
+              },
+              onUserLeft: (exUser) => {
+                socket.emit('userLeft', exUser.id);
+                const allPlayers = this.state.players;
+                for (let i = 0; i < allPlayers.length; i += 1) {
+                  if (allPlayers[i] === exUser) {
+                    allPlayers.splice(i, 1);
+                  }
                 }
-              }
-              this.setState({ players: allPlayers });
+                this.setState({ players: allPlayers });
+              },
             },
-          },
-        }).then((room) => {
-          console.log(`Joined room with ID: ${room.id}`);
-          this.setState({ players: room.users });
-          this.state.currentUser.fetchMultipartMessages({
-            roomId: room.id,
-            direction: 'older',
-            limit: 1,
-          }).then((messages) => {
-            this.setState({
-              messages: messages.slice(0, messages.length - 1),
+          }).then((room) => {
+            console.log(`Joined room with ID: ${room.id}`);
+            this.setState({ players: room.users });
+            this.state.currentUser.fetchMultipartMessages({
+              roomId: room.id,
+              direction: 'older',
+              limit: 1,
+            }).then((messages) => {
+              this.setState({
+                messages: messages.slice(0, messages.length - 1),
+              });
             });
+          }).catch((err) => {
+            console.log(`Error joining room: ${err}`);
           });
-        }).catch((err) => {
-          console.log(`Error joining room: ${err}`);
         });
       } else {
         currentUser.createRoom({
           name: this.state.roomName,
-          private: true,
           customData: { foo: 42 },
         }).then((room) => {
           console.log(`Created room called ${room.name}`, room.id);
@@ -199,7 +207,6 @@ export default class App extends Component {
               {...props}
               enterChat={this.enterChat}
               createRoom={this.handleCreateRoom}
-              findRoom={this.findRoom}
               rooms={this.state.rooms}
             />
           )}
