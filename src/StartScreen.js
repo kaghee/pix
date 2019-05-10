@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './StartScreens.scss';
-import animals from './assets/animals.js';
+import animals from './assets/animals';
+import stars from './assets/stars.txt';
 
 export default class StartScreen extends Component {
   constructor(props) {
@@ -8,7 +9,7 @@ export default class StartScreen extends Component {
 
     this.state = {
       name: '',
-      rooms: this.props.rooms,
+      roomName: '',
     };
   }
 
@@ -19,10 +20,29 @@ export default class StartScreen extends Component {
     });
   }
 
+  handleRoomNameChange = (e) => {
+    e.preventDefault();
+    this.setState({
+      roomName: e.target.value,
+    });
+  }
+
+  handleJoin = () => {
+    console.log('JOIN', this.state.roomName);
+    // this.props.findRoom(this.state.roomName);
+  }
+
+  getRandomRoomName = () => {
+    const words = stars.split('\n');
+    const random = Math.floor(Math.random() * words.length);
+    return words.slice(random, random + 1)[0];
+  }
+
   handleCreateRoom = () => {
     this.props.enterChat(this.state.name, 'newRoom');
+    const roomName = this.getRandomRoomName();
 
-    this.props.createRoom(this.state.name);
+    this.props.createRoom(this.state.name, roomName);
     this.props.history.push('/create');
   }
 
@@ -38,28 +58,20 @@ export default class StartScreen extends Component {
   }
 
   render() {
-    let joinRoomsBlock = '';
-    if (this.state.rooms.length) {
-      const roomOptions = this.state.rooms.map(room => <option value={room} key={room}>{room}</option>);
-      joinRoomsBlock = (
-        <div className="btn join-room">
-          <select disabled={!this.state.name}>
-            <option value="Join a Room" defaultValue>Join a Room</option>
-            {roomOptions}
-          </select>
-        </div>
-      );
-    }
-
     return (
       <div className="start-wrapper">
         <div className="start-box">
           <div className="start-form">
             <input type="text" className="name" placeholder="Enter your name" maxLength="14" onChange={this.handleNameChange} />
-            <div className="button-area">
-              {joinRoomsBlock}
+            <div className="room-options">
+              <div className="join-room">
+                <input type="text" className="room-name" placeholder="Enter Room ID" maxLength="20" onChange={this.handleRoomNameChange} />
+                <input className="btn join" type="button" value="Join Room" onClick={this.handleJoin} />
+              </div>
               <input className="btn play" type="button" value="Create Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
-              <input className="btn play" type="button" value="Play!" onClick={this.handlePlay} />
+            </div>
+            <div className="button-area">
+              <input className="btn play" type="button" value="Join Default Room" onClick={this.handlePlay} />
             </div>
           </div>
         </div>

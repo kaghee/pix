@@ -31,6 +31,7 @@ export default class App extends Component {
       message: '',
       messages: [],
       rooms: [],
+      roomName: '',
     };
   }
 
@@ -65,9 +66,10 @@ export default class App extends Component {
     });
   }
 
-  handleCreateRoom = (username) => {
+  handleCreateRoom = (username, roomName) => {
     this.setState({
       username,
+      roomName,
     });
   }
 
@@ -153,15 +155,17 @@ export default class App extends Component {
         });
       } else {
         currentUser.createRoom({
-          name: 'general',
+          name: this.state.roomName,
           private: true,
           customData: { foo: 42 },
         }).then((room) => {
           console.log(`Created room called ${room.name}`, room.id);
-          socket.emit('roomCreated', room.id);
+          // socket.emit('roomCreated', room.id, room.name);
           const { rooms } = this.state;
           rooms.push(room.id);
-          this.setState({ rooms });
+          this.setState({
+            rooms,
+          });
         }).catch((err) => {
           console.log(`Error creating room ${err}`);
         });
@@ -195,6 +199,7 @@ export default class App extends Component {
               {...props}
               enterChat={this.enterChat}
               createRoom={this.handleCreateRoom}
+              findRoom={this.findRoom}
               rooms={this.state.rooms}
             />
           )}
@@ -206,6 +211,7 @@ export default class App extends Component {
             <CreateRoomScreen
               {...props}
               name={this.state.username}
+              roomName={this.state.roomName}
               enterChat={this.enterChat}
             />
           )}

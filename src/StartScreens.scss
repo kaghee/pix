@@ -14,7 +14,7 @@
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.5);
   width: 500px;
-  height: 300px;
+  height: 330px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -32,47 +32,71 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    .name {
+    .name, .room-name {
       width: 70%;
     }
-
+    .room-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 10px;
+      .join-room {
+        display: flex;
+        flex-direction: column;
+        & * {
+          width: 100%;
+        }
+      }
+    }
     .rounds {
+      width: 180px;
       text-align: center;
+      margin-bottom: 15px;
       select {
         margin-left: 10px;
         text-align: center;
         width: auto;
+        background: #fff;
       }
     }
     .round-length {
+      width: 180px;
+      margin-bottom: 15px;
       input {
         width: 63px;
       }
     }
+    .button-area {
+      display: none;
+    }
   }
-  .button-area {
+  .room-name-container {
     display: flex;
-    width: 380px;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
-    .btn, .join-room * {
-      width: 180px;
-      box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
-      margin: 5px;
-      &:hover {
-        background-color: lighten(salmon, 15%);
-        transform: none;
-        transition: 0.3s;
-      }
-      &:focus {
-        border: none;
-        outline: none;
-      }
+    justify-content: center;
+    .btn.room-name-text {
+      font-family: "Cantarell Light", sans-serif;
+      font-size: 30px;
+      background: none;
+      box-shadow: none;
+      font-weight: bold;
     }
-    .join-room {
-      width: 180px;
+    p {
+      text-align: center;
+      margin-top: 5px;
     }
+  }
+}
+
+.btn {
+  box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
+  &:hover {
+    background-color: lighten(salmon, 15%);
+    transform: none;
+    transition: 0.3s;
+  }
+  &:focus {
+    border: none;
+    outline: none;
   }
 }
 
