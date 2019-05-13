@@ -35,7 +35,7 @@ export default class StartScreen extends Component {
       const animalsList = animals();
       nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
     }
-    this.props.enterChat(nameToUse, this.state.roomName);
+    this.props.enterChat(nameToUse, this.state.roomName || 'random');
   }
 
   getRandomRoomName = () => {
@@ -75,9 +75,6 @@ export default class StartScreen extends Component {
                 <input className="btn join" type="button" value="Join Room" onClick={this.handleJoin} />
               </div>
               <input className="btn play" type="button" value="Create Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
-            </div>
-            <div className="button-area">
-              <input className="btn play" type="button" value="Join Default Room" onClick={this.handlePlay} />
             </div>
           </div>
         </div>

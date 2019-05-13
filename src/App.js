@@ -121,7 +121,11 @@ export default class App extends Component {
 
       if (roomToJoin && roomToJoin !== 'newRoom') {
         currentUser.getJoinableRooms().then((rooms) => {
-          roomId = rooms.find(rm => rm.name === roomToJoin).id;
+          if (roomToJoin !== 'random') {
+            roomId = rooms.find(rm => rm.name === roomToJoin).id;
+          } else {
+            roomId = rooms[Math.floor(Math.random() * rooms.length)].id;
+          }
           currentUser.subscribeToRoomMultipart({
             roomId,
             hooks: {
