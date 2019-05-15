@@ -3,7 +3,7 @@
 }
 
 body {
-  background: url(assets/images/blackhole.jpg);
+  background: url(../assets/images/blackhole.jpg);
   background-attachment: fixed;
   background-position: center center;
   background-size: cover;
@@ -114,7 +114,7 @@ body {
       height: 600px;
       width: 900px;
       background: #fff;
-      cursor: url(assets/images/presets/pxbrush1.png) 2.5 2.5, pointer;
+      cursor: url(../assets/images/presets/pxbrush1.png) 2.5 2.5, pointer;
     }
   }
 }
@@ -130,28 +130,28 @@ body {
     border-radius: 3px;
     background-size: cover;
     &.resetter {
-      background-image: url("./assets/images/delete.png");
+      background-image: url("../assets/images/delete.png");
       &:active {
-        background-image: url("./assets/images/delete_active.png");
+        background-image: url("../assets/images/delete_active.png");
       }
     }
     &.filler {
       position: relative;
-      background-image: url("./assets/images/fill.png");
+      background-image: url("../assets/images/fill.png");
       &.selected {
-        background-image: url("./assets/images/fill_active.png");
+        background-image: url("../assets/images/fill_active.png");
       }
     }
     &.eraser {
-      background-image: url("./assets/images/eraser1.jpg");
+      background-image: url("../assets/images/eraser1.jpg");
       &.selected {
-        background-image: url("./assets/images/eraser1_active.jpg");
+        background-image: url("../assets/images/eraser1_active.jpg");
       }
     }
     &.brush {
-      background-image: url("./assets/images/pencil.jpg");
+      background-image: url("../assets/images/pencil.jpg");
       &.selected {
-        background-image: url("./assets/images/pencil_active.png");
+        background-image: url("../assets/images/pencil_active.png");
       }
     }
   }

@@ -6,7 +6,7 @@ import SocketContext from './SocketContext';
 import GameScreen from './GameScreen';
 import StartScreen from './StartScreen';
 import CreateRoomScreen from './CreateRoomScreen';
-import './App.scss';
+import './css/App.scss';
 
 const socket = io('http://localhost:4000');
 
@@ -32,6 +32,7 @@ export default class App extends Component {
       messages: [],
       rooms: [],
       roomName: '',
+      currentlyCreatedRoomId: '',
     };
   }
 
@@ -53,10 +54,6 @@ export default class App extends Component {
       this.sendMessage(dummyUser, 'SYSTEM user left');
     });
 
-    socket.on('userJoin', (user) => {
-      this.joinRoom(user, defaultRoomId);
-    });
-
     socket.on('newRoom', (room) => {
       const { rooms } = this.state;
       rooms.push(room);
@@ -73,13 +70,10 @@ export default class App extends Component {
     });
   }
 
-  // findRoom = (roomName) => {
-  //   console.log(this.state.currentUser);
-  // }
-
   enterChat = (username, roomToJoin) => {
     this.setState({
       username,
+      roomName: roomToJoin,
     });
     this.createUser(username);
     this.connectToChat(username, roomToJoin);
@@ -115,6 +109,7 @@ export default class App extends Component {
         currentUser,
         players,
       });
+      console.log("chatmanag connect players:", this.state.players);
       // const roomId = roomToJoin === 'default' ? defaultRoomId : roomToJoin;
 
       let roomId = '';
@@ -138,6 +133,7 @@ export default class App extends Component {
                 const playersUpdated = this.state.players;
                 playersUpdated.push(newUser);
                 this.setState({ players: playersUpdated });
+                socket.emit('userJoined', newUser, roomId);
               },
               onUserLeft: (exUser) => {
                 socket.emit('userLeft', exUser.id);
@@ -152,7 +148,9 @@ export default class App extends Component {
             },
           }).then((room) => {
             console.log(`Joined room with ID: ${room.id}`);
-            this.setState({ players: room.users });
+            this.setState({
+              players: room.users,
+            });
             this.state.currentUser.fetchMultipartMessages({
               roomId: room.id,
               direction: 'older',
@@ -167,16 +165,42 @@ export default class App extends Component {
           });
         });
       } else {
+        // Creating a new room
         currentUser.createRoom({
           name: this.state.roomName,
-          customData: { foo: 42 },
         }).then((room) => {
           console.log(`Created room called ${room.name}`, room.id);
-          // socket.emit('roomCreated', room.id, room.name);
           const { rooms } = this.state;
           rooms.push(room.id);
           this.setState({
             rooms,
+            currentlyCreatedRoomId: room.id,
+          });
+          currentUser.subscribeToRoomMultipart({
+            roomId: this.state.currentlyCreatedRoomId,
+            hooks: {
+              onMessage: (message) => {
+                const { messages } = this.state;
+                messages.push(message);
+                this.setState({ messages });
+              },
+              onUserJoined: (newUser) => {
+                const playersUpdated = this.state.players;
+                playersUpdated.push(newUser);
+                this.setState({ players: playersUpdated });
+                socket.emit('userJoined', newUser, roomId);
+              },
+              onUserLeft: (exUser) => {
+                socket.emit('userLeft', exUser.id);
+                const allPlayers = this.state.players;
+                for (let i = 0; i < allPlayers.length; i += 1) {
+                  if (allPlayers[i] === exUser) {
+                    allPlayers.splice(i, 1);
+                  }
+                }
+                this.setState({ players: allPlayers });
+              },
+            },
           });
         }).catch((err) => {
           console.log(`Error creating room ${err}`);
@@ -207,12 +231,15 @@ export default class App extends Component {
           exact
           path="/"
           render={props => (
-            <StartScreen
-              {...props}
-              enterChat={this.enterChat}
-              createRoom={this.handleCreateRoom}
-              rooms={this.state.rooms}
-            />
+            <SocketContext.Provider value={socket}>
+              <StartScreen
+                {...props}
+                enterChat={this.enterChat}
+                createRoom={this.handleCreateRoom}
+                rooms={this.state.rooms}
+                socket={socket}
+              />
+            </SocketContext.Provider>
           )}
         />
         <Route
@@ -224,6 +251,7 @@ export default class App extends Component {
               name={this.state.username}
               roomName={this.state.roomName}
               enterChat={this.enterChat}
+              players={this.state.players}
             />
           )}
         />

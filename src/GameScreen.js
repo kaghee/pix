@@ -5,7 +5,7 @@ import Chat from './chat/Chat';
 import Canvas from './canvas/Canvas';
 import WordsModal from './modals/WordsModal';
 import RoundOverModal from './modals/RoundOverModal';
-import './App.scss';
+import './css/App.scss';
 import defaultWords from './assets/words/default.txt';
 import WordToGuess from './WordToGuess';
 import Timer from './Timer';

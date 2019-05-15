@@ -9,14 +9,17 @@
   height: 100vh;
 }
 
-.start-box {
+.start-box, .room-users {
   border: 3px solid black;
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.5);
-  width: 500px;
   height: 330px;
   display: flex;
   flex-direction: column;
+}
+
+.start-box {
+  width: 400px;
   justify-content: space-around;
   align-items: center;
   input, button, select, .label {
@@ -32,16 +35,13 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    .name, .room-name {
-      width: 70%;
-    }
     .room-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-column-gap: 10px;
+      display: flex;
+      flex-direction: column;
       .join-room {
         display: flex;
         flex-direction: column;
+        margin-bottom: 40px;
         & * {
           width: 100%;
         }
@@ -80,6 +80,18 @@
     p {
       text-align: center;
       margin-top: 5px;
+    }
+  }
+}
+
+.room-users {
+  width: 200px;
+  border-left: none;
+  ul {
+    list-style: none;
+    li {
+      padding: 10px;
+      font-size: 25px;
     }
   }
 }

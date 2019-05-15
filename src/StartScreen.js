@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './StartScreens.scss';
+import './css/StartScreens.scss';
 import animals from './assets/animals';
 import stars from './assets/stars.txt';
 
@@ -35,7 +35,13 @@ export default class StartScreen extends Component {
       const animalsList = animals();
       nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
     }
-    this.props.enterChat(nameToUse, this.state.roomName || 'random');
+    const roomToEnter = this.state.roomName ? this.state.roomName : 'random';
+    this.props.enterChat(nameToUse, roomToEnter);
+    this.props.socket.emit('userJoined', nameToUse, roomToEnter);
+
+    if (roomToEnter !== 'random') {
+      this.props.history.push('/create');
+    }
   }
 
   getRandomRoomName = () => {
@@ -52,17 +58,6 @@ export default class StartScreen extends Component {
     this.props.history.push('/create');
   }
 
-  // handlePlay = () => {
-  //   let nameToUse = this.state.name;
-  //   if (!nameToUse) {
-  //     const animalsList = animals();
-  //     nameToUse = `shy ${animalsList[Math.floor(Math.random() * animalsList.length)]}`;
-  //   }
-  //
-  //   this.props.enterChat(nameToUse, 'default');
-  //   this.props.history.push('/play');
-  // }
-
   render() {
     return (
       <div className="start-wrapper">
@@ -71,10 +66,10 @@ export default class StartScreen extends Component {
             <input type="text" className="name" placeholder="Enter your name" maxLength="14" onChange={this.handleNameChange} />
             <div className="room-options">
               <div className="join-room">
-                <input type="text" className="room-name" placeholder="Enter Room ID" maxLength="20" onChange={this.handleRoomNameChange} />
+                <input type="text" className="room-name" placeholder="Enter Room ID (optional)" maxLength="20" onChange={this.handleRoomNameChange} />
                 <input className="btn join" type="button" value="Join Room" onClick={this.handleJoin} />
               </div>
-              <input className="btn play" type="button" value="Create Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
+              <input className="btn play" type="button" value="Create Private Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
             </div>
           </div>
         </div>

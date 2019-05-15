@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './StartScreens.scss';
+import './css/StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
   handlePlay = () => {
@@ -42,6 +42,13 @@ export default class CreateRoomScreen extends Component {
             </div>
             <input className="btn play" type="button" value="Play!" onClick={this.handlePlay} />
           </div>
+        </div>
+        <div className="room-users">
+          <ul>
+            {this.props.players.map(player => (
+              <li key={Math.random()} className="player">{player.name}</li>
+            ))}
+          </ul>
         </div>
       </div>
     );

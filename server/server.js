@@ -132,7 +132,7 @@ io.on('connection', (socket) => {
     io.emit('userLeft', user, dummyUser);
   });
 
-  // socket.on('roomCreated', (roomId, roomName) => {
-  //   io.emit('newRoom', roomId, roomName);
-  // });
+  socket.on('userJoined', (user, room) => {
+    socket.broadcast.emit('userJoined', user, room);
+  });
 });
