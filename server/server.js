@@ -112,12 +112,20 @@ io.on('connection', (socket) => {
     io.emit('startCountDown');
   });
 
-  socket.on('incomingGuess', (user, word) => {
+  socket.on('incomingGuess', async (user, word) => {
+    // TODO ezt kiszervezni
+    const rooms = await chatkit.getUserRooms({
+      userId: user,
+    }).catch((err) => {
+      console.log(err);
+    });
+    const room = rooms.find(rm => rm.member_user_ids.includes(user));
+
     if (word === currentWord) {
-      socket.broadcast.emit('userGuessedTheWord', user);
+      socket.broadcast.emit('userGuessedTheWord', user, room.id);
     } else {
-      const chatkitUser = chatkit.getUser({ id: user });
-      socket.broadcast.emit('incomingIncorrectGuess', chatkitUser, word);
+      const chatkitUser = await chatkit.getUser({ id: user });
+      socket.broadcast.emit('incomingIncorrectGuess', chatkitUser.name, word, room.id);
     }
   });
 
@@ -126,14 +134,22 @@ io.on('connection', (socket) => {
   });
 
   socket.on('userLeft', async (user) => {
-    const room = await chatkit.getRoom({
-      roomId: '20051968',
+    const rooms = await chatkit.getUserRooms({
+      userId: user,
+    }).catch((err) => {
+      console.log(err);
     });
+    const room = rooms.find(rm => rm.member_user_ids.includes(user));
+
     const dummyUser = room.member_user_ids[0];
-    io.emit('userLeft', user, dummyUser);
+    io.emit('userLeft', user, dummyUser, room);
   });
 
   socket.on('userJoined', (user, room) => {
     socket.broadcast.emit('userJoined', user, room);
+  });
+
+  socket.on('startGame', () => {
+    io.emit('startGame');
   });
 });

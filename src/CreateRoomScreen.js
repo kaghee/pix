@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import './css/StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
+  componentDidMount = () => {
+    this.props.socket.on('startGame', () => {
+      this.props.history.push('/play');
+    });
+  }
+
   handlePlay = () => {
-    this.props.history.push('/play');
+    this.props.socket.emit('startGame');
   }
 
   handleCopy = () => {
@@ -46,10 +52,6 @@ export default class CreateRoomScreen extends Component {
         <div className="room-players">
           <span>Players</span>
           <div className="players-container">
-            <div key="123">12345 78911234</div>
-            <div key="4254">masik jatekos</div>
-            <div key="dfghdgf">valaki</div>
-            <div key="54dgffgfdgf">masik jatekos</div>
             {this.props.players.map(player => (
               <div key={Math.random()} className="player">{player.name}</div>
             ))}

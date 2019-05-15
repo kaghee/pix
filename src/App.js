@@ -43,16 +43,16 @@ export default class App extends Component {
       socket.emit('userLeave', this.state.currentUser.id, defaultRoomId);
     });
 
-    socket.on('incomingIncorrectGuess', (user, word) => {
-      this.sendMessage(user, word);
+    socket.on('incomingIncorrectGuess', (user, word, room) => {
+      this.sendMessage(user, word, room);
     });
 
-    socket.on('userGuessedTheWord', (user) => {
-      this.sendMessage(user, 'SYSTEM correct guess');
+    socket.on('userGuessedTheWord', (user, room) => {
+      this.sendMessage(user, 'SYSTEM correct guess', room);
     });
 
-    socket.on('userLeft', (user, dummyUser) => {
-      this.sendMessage(dummyUser, 'SYSTEM user left');
+    socket.on('userLeft', (user, dummyUser, room) => {
+      this.sendMessage(dummyUser, 'SYSTEM user left', room);
     });
 
     socket.on('newRoom', (room) => {
@@ -208,6 +208,15 @@ export default class App extends Component {
               },
             },
           });
+          this.state.currentUser.fetchMultipartMessages({
+            roomId: this.state.currentlyCreatedRoomId,
+            direction: 'older',
+            limit: 1,
+          }).then((messages) => {
+            this.setState({
+              messages: messages.slice(0, messages.length - 1),
+            });
+          });
         }).catch((err) => {
           console.log(`Error creating room ${err}`);
         });
@@ -217,9 +226,9 @@ export default class App extends Component {
     });
   }
 
-  sendMessage = (user, message) => {
+  sendMessage = (user, message, room) => {
     this.state.currentUser.sendSimpleMessage({
-      defaultRoomId,
+      roomId: room,
       text: message,
     }).then(() => {
       this.setState({
@@ -252,14 +261,17 @@ export default class App extends Component {
           exact
           path="/create"
           render={props => (
-            <CreateRoomScreen
-              {...props}
-              name={this.state.username}
-              roomName={this.state.roomName}
-              enterChat={this.enterChat}
-              players={this.state.players}
-              isCurrentUserOwner={this.state.isCurrentUserOwner}
-            />
+            <SocketContext.Provider value={socket}>
+              <CreateRoomScreen
+                {...props}
+                name={this.state.username}
+                roomName={this.state.roomName}
+                enterChat={this.enterChat}
+                players={this.state.players}
+                isCurrentUserOwner={this.state.isCurrentUserOwner}
+                socket={socket}
+              />
+            </SocketContext.Provider>
           )}
         />
         <Route
