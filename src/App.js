@@ -33,6 +33,7 @@ export default class App extends Component {
       rooms: [],
       roomName: '',
       currentlyCreatedRoomId: '',
+      isCurrentUserOwner: false,
     };
   }
 
@@ -75,11 +76,17 @@ export default class App extends Component {
       username,
       roomName: roomToJoin,
     });
-    this.createUser(username);
+    const owner = roomToJoin === 'newRoom';
+    if (owner) {
+      this.setState({
+        isCurrentUserOwner: true,
+      });
+    }
+    this.createUser(username, owner);
     this.connectToChat(username, roomToJoin);
   }
 
-  createUser = (username) => {
+  createUser = (username, owner) => {
     fetch(`${chatServer}/users`, {
       method: 'POST',
       headers: {
@@ -90,6 +97,7 @@ export default class App extends Component {
       },
       body: JSON.stringify({
         username,
+        owner,
       }),
     });
   }
@@ -109,8 +117,6 @@ export default class App extends Component {
         currentUser,
         players,
       });
-      console.log("chatmanag connect players:", this.state.players);
-      // const roomId = roomToJoin === 'default' ? defaultRoomId : roomToJoin;
 
       let roomId = '';
 
@@ -252,6 +258,7 @@ export default class App extends Component {
               roomName={this.state.roomName}
               enterChat={this.enterChat}
               players={this.state.players}
+              isCurrentUserOwner={this.state.isCurrentUserOwner}
             />
           )}
         />

@@ -9,7 +9,7 @@
   height: 100vh;
 }
 
-.start-box, .room-users {
+.start-box {
   border: 3px solid black;
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -35,6 +35,9 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    p {
+      text-align: center;
+    }
     .room-options {
       display: flex;
       flex-direction: column;
@@ -56,6 +59,9 @@
         text-align: center;
         width: auto;
         background: #fff;
+        &:disabled {
+          background: #eee;
+        }
       }
     }
     .round-length {
@@ -63,19 +69,28 @@
       margin-bottom: 15px;
       input {
         width: 63px;
+        &:disabled {
+          background: #eee;
+        }
       }
+    }
+    .btn.play {
+      margin-bottom: 10px;
+      width: 150px;
     }
   }
   .room-name-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin-top: 15px;
     .btn.room-name-text {
       font-family: "Cantarell Light", sans-serif;
       font-size: 30px;
       background: none;
       box-shadow: none;
       font-weight: bold;
+      text-shadow: -5px 0 10px rgba(255, 255, 255, 0.7), 5px 0 10px rgba(255, 255, 255, 0.7), 0 -5px 10px rgba(255, 255, 255, 0.7), 0 5px 10px rgba(255, 255, 255, 0.7);
     }
     p {
       text-align: center;
@@ -84,14 +99,38 @@
   }
 }
 
-.room-users {
-  width: 200px;
+.room-players {
+  width: 250px;
+  height: 330px;
   border-left: none;
-  ul {
-    list-style: none;
-    li {
+  display: flex;
+  flex-direction: column;
+  span {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 30px;
+    padding: 8px 10px;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: -5px 0 10px rgba(230, 78, 80, 0.7), 5px 0 10px rgba(230, 78, 80, 0.7), 0 -5px 10px rgba(230, 78, 80, 0.7), 0 5px 10px rgba(230, 78, 80, 0.7);
+  }
+  .players-container {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    div {
+      border-radius: 3px;
       padding: 10px;
-      font-size: 25px;
+      margin: 6px;
+      height: 100px;
+      font-size: 15px;
+      font-weight: bold;
+      text-align: center;
+      &:nth-child(2n+1) {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+      &:nth-child(2n) {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
     }
   }
 }

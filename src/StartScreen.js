@@ -69,7 +69,7 @@ export default class StartScreen extends Component {
                 <input type="text" className="room-name" placeholder="Enter Room ID (optional)" maxLength="20" onChange={this.handleRoomNameChange} />
                 <input className="btn join" type="button" value="Join Room" onClick={this.handleJoin} />
               </div>
-              <input className="btn play" type="button" value="Create Private Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
+              <input className="btn create" type="button" value="Create Private Room" onClick={this.handleCreateRoom} disabled={!this.state.name} />
             </div>
           </div>
         </div>
