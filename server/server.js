@@ -87,15 +87,33 @@ io.on('connection', (socket) => {
     io.emit('resetCanvas');
   });
 
-  socket.on('userLeave', (userId, roomId) => {
+  socket.on('userLeave', async (userId) => {
+    const rooms = await chatkit.getUserRooms({
+      userId,
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    const room = await rooms.find((rm) => {
+      console.log("userId:", userId);
+      const members = rm.member_user_ids;
+      return members.includes(userId);
+    });
+
     chatkit.removeUsersFromRoom({
-      roomId,
+      roomId: room.id,
       userIds: [userId],
     }).catch(err => console.error(err));
 
     chatkit.deleteUser({ userId }).then(() => {
       console.log('User deleted successfully');
     });
+
+    chatkit.sendSimpleMessage({
+      userId,
+      roomId: room.id,
+      text: 'SYSTEM user left',
+    }).catch(err => console.log(err));
   });
 
   socket.on('userChoosingWord', (user) => {
@@ -139,23 +157,6 @@ io.on('connection', (socket) => {
 
   socket.on('endRound', () => {
     io.emit('endRound', currentWord);
-  });
-
-  socket.on('userLeft', async (user) => {
-    const rooms = await chatkit.getUserRooms({
-      userId: user,
-    }).catch((err) => {
-      console.log(err);
-    });
-    const room = rooms.find(rm => rm.member_user_ids.includes(user));
-
-    const dummyUser = room.member_user_ids[0];
-    // io.emit('userLeft', user, dummyUser, room);
-    chatkit.sendSimpleMessage({
-      userId: dummyUser.id,
-      roomId: room.id,
-      text: 'SYSTEM user left',
-    }).catch(err => console.log(err));
   });
 
   socket.on('userJoined', (user, room) => {
