@@ -43,18 +43,6 @@ export default class App extends Component {
       socket.emit('userLeave', this.state.currentUser.id, defaultRoomId);
     });
 
-    socket.on('incomingIncorrectGuess', (user, word, room) => {
-      this.sendMessage(user, word, room);
-    });
-
-    socket.on('userGuessedTheWord', (user, room) => {
-      this.sendMessage(user, 'SYSTEM correct guess', room);
-    });
-
-    socket.on('userLeft', (user, dummyUser, room) => {
-      this.sendMessage(dummyUser, 'SYSTEM user left', room);
-    });
-
     socket.on('newRoom', (room) => {
       const { rooms } = this.state;
       rooms.push(room);
@@ -225,19 +213,6 @@ export default class App extends Component {
       console.log('Error on connection', err);
     });
   }
-
-  sendMessage = (user, message, room) => {
-    this.state.currentUser.sendSimpleMessage({
-      roomId: room,
-      text: message,
-    }).then(() => {
-      this.setState({
-        message: '',
-      });
-    }).catch((err) => {
-      console.log(`error adding message to room: ${err}`);
-    });
-  };
 
   render() {
     return (

@@ -120,12 +120,20 @@ io.on('connection', (socket) => {
       console.log(err);
     });
     const room = rooms.find(rm => rm.member_user_ids.includes(user));
+    const chatkitUser = await chatkit.getUser({ id: user });
 
     if (word === currentWord) {
-      socket.broadcast.emit('userGuessedTheWord', user, room.id);
+      chatkit.sendSimpleMessage({
+        userId: chatkitUser.id,
+        roomId: room.id,
+        text: 'SYSTEM correct guess',
+      }).catch(err => console.log(err));
     } else {
-      const chatkitUser = await chatkit.getUser({ id: user });
-      socket.broadcast.emit('incomingIncorrectGuess', chatkitUser.name, word, room.id);
+      chatkit.sendSimpleMessage({
+        userId: chatkitUser.id,
+        roomId: room.id,
+        text: word,
+      }).catch(err => console.log(err));
     }
   });
 
@@ -142,7 +150,12 @@ io.on('connection', (socket) => {
     const room = rooms.find(rm => rm.member_user_ids.includes(user));
 
     const dummyUser = room.member_user_ids[0];
-    io.emit('userLeft', user, dummyUser, room);
+    // io.emit('userLeft', user, dummyUser, room);
+    chatkit.sendSimpleMessage({
+      userId: dummyUser.id,
+      roomId: room.id,
+      text: 'SYSTEM user left',
+    }).catch(err => console.log(err));
   });
 
   socket.on('userJoined', (user, room) => {
