@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PlayerAvatar from './PlayerAvatar';
 import './css/StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
@@ -50,11 +51,14 @@ export default class CreateRoomScreen extends Component {
           </div>
         </div>
         <div className="room-players">
-          <span>Players</span>
+          <span className="title">Players</span>
           <div className="players-container">
             {this.props.players.map(player => (
-              <div key={Math.random()} className="player">{player.name}</div>
+              <div key={Math.random()} className="player">
+                <PlayerAvatar player={player} />
+              </div>
             ))}
+
           </div>
         </div>
       </div>

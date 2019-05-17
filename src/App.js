@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import io from 'socket.io-client';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faUserAstronaut, faUserNinja, faUserSecret,
+  faUserTie, faUserMd, faUserNurse, faChevronLeft, faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import SocketContext from './SocketContext';
 import GameScreen from './GameScreen';
 import StartScreen from './StartScreen';
@@ -19,6 +24,15 @@ const tokenProvider = new TokenProvider({
 });
 
 const token = '';
+
+library.add(faUserAstronaut);
+library.add(faUserNinja);
+library.add(faUserSecret);
+library.add(faUserTie);
+library.add(faUserMd);
+library.add(faUserNurse);
+library.add(faChevronLeft);
+library.add(faChevronRight);
 
 export default class App extends Component {
   constructor(props) {
@@ -211,6 +225,7 @@ export default class App extends Component {
       }
     }).catch((err) => {
       console.log('Error on connection', err);
+      alert('An error occurred while trying to connect. Please refresh the page and try again.');
     });
   }
 

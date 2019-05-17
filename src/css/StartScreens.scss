@@ -105,7 +105,7 @@
   border-left: none;
   display: flex;
   flex-direction: column;
-  span {
+  .title {
     text-align: center;
     margin: 15px 0;
     font-size: 30px;
@@ -117,7 +117,11 @@
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    div {
+    .player {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       border-radius: 3px;
       padding: 10px;
       margin: 6px;
@@ -130,6 +134,25 @@
       }
       &:nth-child(2n) {
         background-color: rgba(255, 255, 255, 0.8);
+      }
+      .player-avatar {
+        .icon-picker {
+          display: flex;
+          align-items: center;
+          .arrow {
+            margin: 0 5px;
+            cursor: pointer;
+          }
+          .icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+          }
+        }
+        span {
+          font-size: 15px;
+          color: #000;
+          pointer-events: none;
+        }
       }
     }
   }

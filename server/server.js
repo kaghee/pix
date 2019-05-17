@@ -31,6 +31,8 @@ const chatkit = new Chatkit.default({
   key: secretKey,
 });
 
+let userIndex = 0;
+
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,6 +41,7 @@ app.use(cors());
 
 app.post('/users', (req, res) => {
   const { username, owner } = req.body;
+  userIndex += 1;
 
   chatkit.createUser({
     id: username,
@@ -47,19 +50,18 @@ app.post('/users', (req, res) => {
       score: 0,
       finished: false,
       roomOwner: owner,
+      userIndex,
     },
-  })
-    .then(() => {
-      console.log(`User ${username} created successfully`);
-      res.sendStatus(201);
-    })
-    .catch((error) => {
-      if (error.error_type === 'services/chatkit/user_already_exists') {
-        res.sendStatus(200);
-      } else {
-        res.status(error.status).json(error);
-      }
-    });
+  }).then(() => {
+    console.log(`User ${username} created successfully`);
+    res.sendStatus(201);
+  }).catch((error) => {
+    if (error.error_type === 'services/chatkit/user_already_exists') {
+      res.sendStatus(200);
+    } else {
+      res.status(error.status).json(error);
+    }
+  });
 });
 
 io.on('connection', (socket) => {
@@ -95,10 +97,15 @@ io.on('connection', (socket) => {
     });
 
     const room = await rooms.find((rm) => {
-      console.log("userId:", userId);
       const members = rm.member_user_ids;
       return members.includes(userId);
     });
+
+    chatkit.sendSimpleMessage({
+      userId,
+      roomId: room.id,
+      text: 'SYSTEM user left',
+    }).catch(err => console.log(err));
 
     chatkit.removeUsersFromRoom({
       roomId: room.id,
@@ -108,12 +115,6 @@ io.on('connection', (socket) => {
     chatkit.deleteUser({ userId }).then(() => {
       console.log('User deleted successfully');
     });
-
-    chatkit.sendSimpleMessage({
-      userId,
-      roomId: room.id,
-      text: 'SYSTEM user left',
-    }).catch(err => console.log(err));
   });
 
   socket.on('userChoosingWord', (user) => {
