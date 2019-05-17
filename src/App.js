@@ -6,7 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faUserAstronaut, faUserNinja, faUserSecret, faUserGraduate,
   faUserTie, faUserMd, faUserNurse, faChevronLeft, faChevronRight,
-  faCrown,
+  faCrown, faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import SocketContext from './SocketContext';
 import GameScreen from './GameScreen';
@@ -35,6 +35,7 @@ library.add(faUserGraduate);
 library.add(faChevronLeft);
 library.add(faChevronRight);
 library.add(faCrown);
+library.add(faCameraRetro);
 
 export default class App extends Component {
   constructor(props) {
