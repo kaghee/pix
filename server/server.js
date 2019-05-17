@@ -31,8 +31,6 @@ const chatkit = new Chatkit.default({
   key: secretKey,
 });
 
-let userIndex = 0;
-
 app.use(express.static(path.join(__dirname, 'dist')));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,8 +38,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/users', (req, res) => {
-  const { username, owner } = req.body;
-  userIndex += 1;
+  const { username, owner, icon } = req.body;
 
   chatkit.createUser({
     id: username,
@@ -50,7 +47,7 @@ app.post('/users', (req, res) => {
       score: 0,
       finished: false,
       roomOwner: owner,
-      userIndex,
+      icon,
     },
   }).then(() => {
     console.log(`User ${username} created successfully`);
@@ -166,5 +163,9 @@ io.on('connection', (socket) => {
 
   socket.on('startGame', () => {
     io.emit('startGame');
+  });
+
+  socket.on('iconChanged', (user, icon) => {
+    socket.broadcast.emit('iconChanged', user, icon);
   });
 });

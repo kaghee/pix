@@ -13,7 +13,7 @@
   border: 3px solid black;
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.5);
-  height: 330px;
+  height: 400px;
   display: flex;
   flex-direction: column;
 }
@@ -37,6 +37,20 @@
     align-items: center;
     p {
       text-align: center;
+    }
+    .icon-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .arrow {
+        margin: 0 15px;
+        cursor: pointer;
+        font-size: 30px;
+        color: rgba(0, 0, 0, 0.7);
+      }
+      .icon {
+        font-size: 70px;
+      }
     }
     .room-options {
       display: flex;
@@ -135,24 +149,14 @@
       &:nth-child(2n) {
         background-color: rgba(255, 255, 255, 0.8);
       }
-      .player-avatar {
-        .icon-picker {
-          display: flex;
-          align-items: center;
-          .arrow {
-            margin: 0 5px;
-            cursor: pointer;
-          }
-          .icon {
-            font-size: 45px;
-            margin-bottom: 10px;
-          }
-        }
-        span {
-          font-size: 15px;
-          color: #000;
-          pointer-events: none;
-        }
+      .icon {
+        font-size: 45px;
+        margin-bottom: 10px;
+      }
+      span {
+        font-size: 15px;
+        color: #000;
+        pointer-events: none;
       }
     }
   }

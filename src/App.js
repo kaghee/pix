@@ -4,7 +4,7 @@ import { ChatManager, TokenProvider } from '@pusher/chatkit-client';
 import io from 'socket.io-client';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faUserAstronaut, faUserNinja, faUserSecret,
+  faUserAstronaut, faUserNinja, faUserSecret, faUserGraduate,
   faUserTie, faUserMd, faUserNurse, faChevronLeft, faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 import SocketContext from './SocketContext';
@@ -17,7 +17,6 @@ const socket = io('http://localhost:4000');
 
 const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
 const instanceId = 'aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
-const defaultRoomId = '20051968';
 const chatServer = 'http://localhost:4000';
 const tokenProvider = new TokenProvider({
   url: `https://us1.pusherplatform.io/services/chatkit_token_provider/v1/${instanceId}/token`,
@@ -31,6 +30,7 @@ library.add(faUserSecret);
 library.add(faUserTie);
 library.add(faUserMd);
 library.add(faUserNurse);
+library.add(faUserGraduate);
 library.add(faChevronLeft);
 library.add(faChevronRight);
 
@@ -73,7 +73,8 @@ export default class App extends Component {
     });
   }
 
-  enterChat = (username, roomToJoin) => {
+  enterChat = (username, icon, roomToJoin) => {
+    console.log({icon});
     this.setState({
       username,
       roomName: roomToJoin,
@@ -84,11 +85,11 @@ export default class App extends Component {
         isCurrentUserOwner: true,
       });
     }
-    this.createUser(username, owner);
+    this.createUser(username, owner, icon);
     this.connectToChat(username, roomToJoin);
   }
 
-  createUser = (username, owner) => {
+  createUser = (username, owner, icon) => {
     fetch(`${chatServer}/users`, {
       method: 'POST',
       headers: {
@@ -100,6 +101,7 @@ export default class App extends Component {
       body: JSON.stringify({
         username,
         owner,
+        icon,
       }),
     });
   }

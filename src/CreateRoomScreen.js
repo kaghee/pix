@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PlayerAvatar from './PlayerAvatar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './css/StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
@@ -55,10 +55,10 @@ export default class CreateRoomScreen extends Component {
           <div className="players-container">
             {this.props.players.map(player => (
               <div key={Math.random()} className="player">
-                <PlayerAvatar player={player} />
+                <FontAwesomeIcon className="icon" icon={player.customData.icon} />
+                <span>{player.name}</span>
               </div>
             ))}
-
           </div>
         </div>
       </div>

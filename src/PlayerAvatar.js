@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './css/StartScreens.scss';
+import avatars from './assets/avatars';
 
-const icons = ['user-astronaut', 'user-ninja', 'user-secret', 'user-tie', 'user-md', 'user-nurse'];
+const icons = avatars();
 
 export default class PlayerAvatar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentIconIndex: this.props.player.customData.userIndex % icons.length,
+      currentIconIndex: Math.floor(Math.random() * icons.length),
     };
   }
 
   increment = () => {
     this.setState(prevState => ({ currentIconIndex: prevState.currentIconIndex + 1 }));
+    this.props.onIconChange(icons[this.state.currentIconIndex + 1]);
   }
 
   decrement = () => {
     this.setState(prevState => ({ currentIconIndex: prevState.currentIconIndex - 1 }));
+    this.props.onIconChange(icons[this.state.currentIconIndex - 1]);
   }
 
   getPreviousIcon = () => {
@@ -29,6 +32,7 @@ export default class PlayerAvatar extends Component {
         currentIconIndex: icons.length - 1,
       });
     }
+    this.props.onIconChange(icons[icons.length - 1]);
   }
 
   getNextIcon = () => {
@@ -38,18 +42,16 @@ export default class PlayerAvatar extends Component {
       this.setState({
         currentIconIndex: 0,
       });
+      this.props.onIconChange(icons[0]);
     }
   }
 
   render() {
     return (
-      <div className="player-avatar">
-        <div className="icon-picker">
-          <FontAwesomeIcon className="arrow left" icon="chevron-left" onClick={this.getPreviousIcon} />
-          <FontAwesomeIcon className="icon" icon={icons[this.state.currentIconIndex]} />
-          <FontAwesomeIcon className="arrow right" icon="chevron-right" onClick={this.getNextIcon} />
-        </div>
-        <span>{this.props.player.name}</span>
+      <div className="icon-picker">
+        <FontAwesomeIcon className="arrow" icon="chevron-left" onClick={this.getPreviousIcon} />
+        <FontAwesomeIcon className="icon" icon={icons[this.state.currentIconIndex]} />
+        <FontAwesomeIcon className="arrow" icon="chevron-right" onClick={this.getNextIcon} />
       </div>
     );
   }
