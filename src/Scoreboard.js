@@ -2,8 +2,6 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Scoreboard(props) {
-  props.players.map((player) => console.log(player));
-  console.log("fini", props.finishedPlayers);
   return (
     <ul className="scoreboard">
       {props.players.map(player => (
