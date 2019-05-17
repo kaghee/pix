@@ -24,15 +24,13 @@ export default class Chat extends Component {
   }
 
   render() {
+    console.log(this.props.disabled);
     return (
       <div className="chat">
         <MessageList messages={this.props.messages} />
         <SendMessageForm
-          sendMessage={this.props.updateMessage}
-          name={this.props.name}
-          wordToGuess={this.props.wordToGuess}
-          canGuess={this.state.canGuess}
           onGuess={this.handleGuess}
+          disabled={this.props.disabled}
         />
       </div>
     );

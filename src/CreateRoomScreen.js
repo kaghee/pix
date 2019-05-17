@@ -55,6 +55,7 @@ export default class CreateRoomScreen extends Component {
           <div className="players-container">
             {this.props.players.map(player => (
               <div key={Math.random()} className="player">
+                <FontAwesomeIcon className={`crown ${player.customData.roomOwner ? 'visible' : 'hidden'}`} icon="crown" />
                 <FontAwesomeIcon className="icon" icon={player.customData.icon} />
                 <span>{player.name}</span>
               </div>

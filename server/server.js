@@ -45,7 +45,6 @@ app.post('/users', (req, res) => {
     name: username,
     customData: {
       score: 0,
-      finished: false,
       roomOwner: owner,
       icon,
     },
@@ -62,6 +61,17 @@ app.post('/users', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  // delete all rooms
+  // chatkit.getRooms({})
+  //   .then((rooms) => {
+  //     rooms.forEach((room) => {
+  //       chatkit.deleteRoom({
+  //         id: room.id,
+  //       }).then(() => console.log('room deleted'));
+  //     });
+  //   })
+  //   .catch(err => console.error(err));
+
   socket.on('drawing', (data) => {
     socket.broadcast.emit('drawing', { data });
   });
@@ -144,6 +154,8 @@ io.on('connection', (socket) => {
         roomId: room.id,
         text: 'SYSTEM correct guess',
       }).catch(err => console.log(err));
+
+      io.emit('userFinishedRound', user);
     } else {
       chatkit.sendSimpleMessage({
         userId: chatkitUser.id,

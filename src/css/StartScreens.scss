@@ -140,6 +140,7 @@
       padding: 10px;
       margin: 6px;
       height: 100px;
+      width: 80px;
       font-size: 15px;
       font-weight: bold;
       text-align: center;
@@ -152,6 +153,12 @@
       .icon {
         font-size: 45px;
         margin-bottom: 10px;
+      }
+      .crown {
+        color: #f4bb41;
+        &.hidden {
+          display: none;
+        }
       }
       span {
         font-size: 15px;

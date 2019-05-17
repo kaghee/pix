@@ -25,6 +25,7 @@ export default class GameScreen extends Component {
       canDraw: false,
       drawersWord: '',
       wordWas: '',
+      finishedPlayers: [],
     };
   }
 
@@ -51,6 +52,19 @@ export default class GameScreen extends Component {
       this.setState({
         wordWas: word,
       });
+    });
+
+    this.props.socket.on('userFinishedRound', (user) => {
+      const { finishedPlayers } = this.state;
+      finishedPlayers.push(user);
+      this.setState({
+        finishedPlayers,
+      });
+      if (this.props.user === user) {
+        this.setState({
+          userRole: 'finished',
+        });
+      }
     });
   }
 
@@ -124,7 +138,7 @@ export default class GameScreen extends Component {
     return (
       <div className="wrapper">
         <button className={this.state.roundInProgress ? 'start-btn hidden' : 'start-btn'} type="button" onClick={this.startRound}>G O !</button>
-        <Scoreboard players={this.props.players} />
+        <Scoreboard players={this.props.players} finishedPlayers={this.state.finishedPlayers} />
         <div className="middle">
           <div className="title-and-word-container">
             <span>P I X I T</span>
@@ -172,6 +186,7 @@ export default class GameScreen extends Component {
               messages={this.props.messages}
               updateMessage={this.props.sendMessage}
               wordToGuess={this.state.currentWord}
+              disabled={this.state.userRole !== 'guesser'}
               socket={socket}
             />
           )

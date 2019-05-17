@@ -33,7 +33,7 @@ export default class SendMessageForm extends Component {
           value={this.state.message}
           placeholder="Type your guess here..."
           type="text"
-          disabled={!this.props.canGuess}
+          disabled={this.props.disabled}
         />
       </form>
     );
