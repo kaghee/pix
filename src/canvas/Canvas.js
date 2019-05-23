@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Palette from './Palette';
 import Presets from './Presets';
 import Resetter from './Resetter';
@@ -251,6 +252,10 @@ export default class Canvas extends Component {
     ctx.putImageData(imageData, 0, 0);
   }
 
+  takeScreenshot = () => {
+    console.log("CLICK!");
+  }
+
   render() {
     const colour = this.state.tool === 'eraser' ? 'transparent' : `rgb(${this.state.colour})`;
     const eraserClassNames = this.state.tool === 'eraser' ? 'eraser tool selected' : 'eraser tool';
@@ -267,6 +272,9 @@ export default class Canvas extends Component {
           onMouseOut={this.handleMouseOut}
           onBlur={this.handleMouseOut}
         />
+        <div className="screenshot">
+          <FontAwesomeIcon className="icon" icon="camera-retro" onClick={this.takeScreenshot} />
+        </div>
         <div className="palette-and-presets-toolbar">
           <Palette onColourChange={this.changeColour} tool={this.state.tool} />
           <Presets onPresetChange={this.changePreset} />

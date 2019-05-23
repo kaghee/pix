@@ -64,6 +64,7 @@ body {
   height: 685px;
   width: auto;
   .scoreboard {
+    width: 200px;
     height: 600px;
     max-height: 600px;
     border: 3px solid white;
@@ -104,15 +105,16 @@ body {
     }
 
   }
-  .screenshot {
-    margin-bottom: 40px;
-    .icon {
-      font-size: 40px;
-      color: #fff;
-      cursor: pointer;
-      &:hover {
-        color: deepPink;
-      }
+}
+.screenshot {
+  position: absolute;
+  margin-left: -50px;
+  .icon {
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+    &:hover {
+      color: deepPink;
     }
   }
 }
@@ -141,6 +143,9 @@ body {
   .canvas-and-tools-container {
     &.disabled {
       pointer-events: none;
+      .screenshot {
+        pointer-events: all;
+      }
     }
     canvas {
       height: 600px;
@@ -298,7 +303,7 @@ button {
 .chat {
   margin-top: 60px;
   height: 600px;
-  width: 90%;
+  width: 250px;
   min-width: 280px;
   flex: 1;
   display: flex;

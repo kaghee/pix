@@ -12,9 +12,7 @@ function Scoreboard(props) {
           </li>
         ))}
       </ul>
-      <div className="screenshot">
-        <FontAwesomeIcon className="icon" icon="camera-retro" onClick={props.takeScreenshot} />
-      </div>
+
     </div>
   );
 }

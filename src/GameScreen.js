@@ -134,15 +134,11 @@ export default class GameScreen extends Component {
     this.hideWordsModal();
   }
 
-  takeScreenshot = () => {
-    console.log("CLICK!");
-  }
-
   render() {
     return (
       <div className="wrapper">
         <button className={this.state.roundInProgress ? 'start-btn hidden' : 'start-btn'} type="button" onClick={this.startRound}>G O !</button>
-        <Scoreboard players={this.props.players} finishedPlayers={this.state.finishedPlayers} takeScreenshot={this.takeScreenshot} />
+        <Scoreboard players={this.props.players} finishedPlayers={this.state.finishedPlayers} />
         <div className="middle">
           <div className="title-and-word-container">
             <span>P I X I T</span>
