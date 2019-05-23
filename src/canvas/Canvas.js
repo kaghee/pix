@@ -253,7 +253,14 @@ export default class Canvas extends Component {
   }
 
   takeScreenshot = () => {
-    console.log("CLICK!");
+    const screenshotDataURL = this.display.current.toDataURL('jpg');
+    const link = document.createElement('a');
+    link.href = screenshotDataURL;
+    const screenshot = 'piece-of-art';
+    link.download = screenshot;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   render() {
@@ -273,7 +280,7 @@ export default class Canvas extends Component {
           onBlur={this.handleMouseOut}
         />
         <div className="screenshot">
-          <FontAwesomeIcon className="icon" icon="camera-retro" onClick={this.takeScreenshot} />
+          <FontAwesomeIcon className="icon" icon="camera-retro" title="Take screenshot" onClick={this.takeScreenshot} />
         </div>
         <div className="palette-and-presets-toolbar">
           <Palette onColourChange={this.changeColour} tool={this.state.tool} />
