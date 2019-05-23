@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Palette from './Palette';
 import Presets from './Presets';
@@ -125,7 +126,8 @@ export default class Canvas extends Component {
   }
 
   reset = (ws) => {
-    ctx.clearRect(0, 0, 900, 600);
+    ctx.fillStyle = 'rgb(255, 255, 255)';
+    ctx.fillRect(0, 0, 900, 600);
     if (!ws) {
       this.props.socket.emit('resetCanvas');
     }
@@ -174,9 +176,9 @@ export default class Canvas extends Component {
       b: this.state.colour[2],
     };
 
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgb(0, 0, 0)';
-    ctx.strokeRect(-1, -1, 902, 602);
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = 'rgb(0, 0, 0)';
+    // ctx.strokeRect(-1, -1, 902, 602);
 
     const width = this.state.preset;
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
@@ -256,7 +258,8 @@ export default class Canvas extends Component {
     const screenshotDataURL = this.display.current.toDataURL('jpg');
     const link = document.createElement('a');
     link.href = screenshotDataURL;
-    const screenshot = 'piece-of-art';
+    const date = moment().format('MM-DD');
+    const screenshot = `piece-of-art-${date}`;
     link.download = screenshot;
     document.body.appendChild(link);
     link.click();
