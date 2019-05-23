@@ -200,7 +200,7 @@ export default class Canvas extends Component {
       const b = imageData.data[pixelPos + 2];
 
       // If the current pixel matches the clicked color
-      if (r !== initialR && g !== initialG && b !== initialB) {
+      if (r !== initialR || g !== initialG || b !== initialB) {
         return false;
       }
 
@@ -257,9 +257,10 @@ export default class Canvas extends Component {
   takeScreenshot = () => {
     const screenshotDataURL = this.display.current.toDataURL('jpg');
     const link = document.createElement('a');
-    link.href = screenshotDataURL;
     const date = moment().format('MM-DD');
     const screenshot = `piece-of-art-${date}`;
+
+    link.href = screenshotDataURL;
     link.download = screenshot;
     document.body.appendChild(link);
     link.click();
