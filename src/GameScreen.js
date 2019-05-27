@@ -49,8 +49,13 @@ export default class GameScreen extends Component {
     });
 
     this.props.socket.on('endRound', (word) => {
+      this.openRoundOverModal();
       this.setState({
         wordWas: word,
+        roundInProgress: false,
+        userRole: 'guesser',
+        canDraw: false,
+        finishedPlayers: [],
       });
     });
 
@@ -64,6 +69,9 @@ export default class GameScreen extends Component {
         this.setState({
           userRole: 'finished',
         });
+      }
+      if (this.state.finishedPlayers.length === this.props.players.length - 1) {
+        this.props.socket.emit('endRound');
       }
     });
   }
@@ -113,12 +121,12 @@ export default class GameScreen extends Component {
 
   endRound = () => {
     this.props.socket.emit('endRound');
-    this.openRoundOverModal();
-    this.setState({
-      roundInProgress: false,
-      userRole: 'guesser',
-      canDraw: false,
-    });
+    // this.openRoundOverModal();
+    // this.setState({
+    //   roundInProgress: false,
+    //   userRole: 'guesser',
+    //   canDraw: false,
+    // });
   }
 
   handleWordSelect = (word) => {

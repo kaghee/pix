@@ -17,6 +17,13 @@ export default class Timer extends Component {
         countDown: true,
       });
     });
+
+    this.props.socket.on('resetCountDown', () => {
+      this.setState({
+        countDown: false,
+        seconds: 0,
+      });
+    });
   }
 
   startCountDown = () => {

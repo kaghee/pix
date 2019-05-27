@@ -166,6 +166,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('endRound', () => {
+    io.emit('resetCountDown');
     io.emit('endRound', currentWord);
   });
 
