@@ -120,6 +120,10 @@ io.on('connection', (socket) => {
     });
   });
 
+  socket.on('startGame', () => {
+    io.emit('startGame');
+  });
+
   socket.on('userChoosingWord', (user) => {
     socket.broadcast.emit('userChoosingWord', user);
   });
