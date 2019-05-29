@@ -153,6 +153,7 @@ export default class Canvas extends Component {
       tool: 'eraser',
     });
     ctx.strokeStyle = 'rgb(255, 255, 255)';
+    this.props.socket.emit('eraser');
   }
 
   activateBrush = () => {

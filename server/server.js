@@ -76,8 +76,16 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('drawing', { data });
   });
 
+  socket.on('fill', (startX, startY, currColour) => {
+    socket.broadcast.emit('fill', startX, startY, currColour);
+  });
+
   socket.on('changeColour', (newColour) => {
     socket.broadcast.emit('changeColour', newColour);
+  });
+
+  socket.on('eraser', () => {
+    io.emit('changeColour', [255, 255, 255]);
   });
 
   socket.on('changePreset', (newPreset) => {
@@ -176,9 +184,5 @@ io.on('connection', (socket) => {
 
   socket.on('iconChanged', (user, icon) => {
     socket.broadcast.emit('iconChanged', user, icon);
-  });
-
-  socket.on('fill', (startX, startY, currColour) => {
-    socket.broadcast.emit('fill', startX, startY, currColour);
   });
 });
