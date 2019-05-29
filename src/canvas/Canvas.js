@@ -37,9 +37,9 @@ export default class Canvas extends Component {
       this.changePreset(newPreset, true);
     });
 
-    // this.props.socket.on('fill', (imageData) => {
-    //   this.executeFill(imageData.data, true);
-    // });
+    this.props.socket.on('fill', (startX, startY, currColour) => {
+      this.fill(startX, startY, currColour, true);
+    });
 
     this.props.socket.on('resetCanvas', () => {
       this.reset(true);
@@ -94,7 +94,16 @@ export default class Canvas extends Component {
 
   handleMouseDown = (e) => {
     if (this.state.tool === 'filler') {
-      this.fill(e);
+      const startX = e.clientX - e.currentTarget.offsetLeft;
+      const startY = e.clientY - e.currentTarget.offsetTop;
+
+      const currColour = {
+        r: this.state.colour[0],
+        g: this.state.colour[1],
+        b: this.state.colour[2],
+      };
+
+      this.fill(startX, startY, currColour);
     } else {
       this.setState({
         isDrawing: true,
@@ -169,24 +178,11 @@ export default class Canvas extends Component {
     }
   }
 
-  fill = (e, ws) => {
-    const currColour = {
-      r: this.state.colour[0],
-      g: this.state.colour[1],
-      b: this.state.colour[2],
-    };
-
-    // ctx.lineWidth = 1;
-    // ctx.strokeStyle = 'rgb(0, 0, 0)';
-    // ctx.strokeRect(-1, -1, 902, 602);
-
+  fill = (startX, startY, currColour, ws) => {
     const width = this.state.preset;
     ctx.lineWidth = width < 2 ? width * 4 : width * 8;
 
     const imageData = ctx.getImageData(0, 0, 900, 600);
-
-    const startX = e.clientX - e.currentTarget.offsetLeft;
-    const startY = e.clientY - e.currentTarget.offsetTop;
 
     const startPos = (startY * 900 + startX) * 4;
 
@@ -252,6 +248,10 @@ export default class Canvas extends Component {
     traverse(startX, startY);
 
     ctx.putImageData(imageData, 0, 0);
+
+    if (!ws) {
+      this.props.socket.emit('fill', startX, startY, currColour);
+    }
   }
 
   takeScreenshot = () => {

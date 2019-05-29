@@ -90,13 +90,17 @@ body {
       padding: 5px;
       &:nth-child(2n+1) {
         background-color: rgba(255, 255, 255, 0.3);
+        &.finished {
+          background-color: rgba(220, 244, 65, 0.7);
+          color: #000;
+        }
       }
       &:nth-child(2n) {
         background-color: rgba(255, 255, 255, 0.6);
-      }
-      &.finished {
-        background-color: rgba(220, 244, 65, 0.9);
-        color: #000;
+        &.finished {
+          background-color: rgba(220, 244, 65, 0.9);
+          color: #000;
+        }
       }
       .icon {
         font-size: 40px;

@@ -62,15 +62,15 @@ app.post('/users', (req, res) => {
 
 io.on('connection', (socket) => {
   // delete all rooms
-  // chatkit.getRooms({})
-  //   .then((rooms) => {
-  //     rooms.forEach((room) => {
-  //       chatkit.deleteRoom({
-  //         id: room.id,
-  //       }).then(() => console.log('room deleted'));
-  //     });
-  //   })
-  //   .catch(err => console.error(err));
+  chatkit.getRooms({})
+    .then((rooms) => {
+      rooms.forEach((room) => {
+        chatkit.deleteRoom({
+          id: room.id,
+        }).then(() => console.log('room deleted'));
+      });
+    })
+    .catch(err => console.error(err));
 
   socket.on('drawing', (data) => {
     socket.broadcast.emit('drawing', { data });
@@ -83,10 +83,6 @@ io.on('connection', (socket) => {
   socket.on('changePreset', (newPreset) => {
     socket.broadcast.emit('changePreset', newPreset);
   });
-
-  // socket.on('fill', (imageData) => {
-  //   socket.broadcast.emit('fill', imageData);
-  // });
 
   socket.on('resetCanvas', () => {
     socket.broadcast.emit('resetCanvas');
@@ -174,11 +170,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('userJoined', user, room);
   });
 
-  socket.on('startGame', () => {
-    io.emit('startGame');
-  });
-
   socket.on('iconChanged', (user, icon) => {
     socket.broadcast.emit('iconChanged', user, icon);
+  });
+
+  socket.on('fill', (startX, startY, currColour) => {
+    socket.broadcast.emit('fill', startX, startY, currColour);
   });
 });
