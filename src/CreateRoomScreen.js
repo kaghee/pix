@@ -10,7 +10,8 @@ export default class CreateRoomScreen extends Component {
   }
 
   handlePlay = () => {
-    this.props.socket.emit('startGame');
+    const players = this.props.players.map(pl => pl.name);
+    this.props.socket.emit('startGame', players);
   }
 
   handleCopy = () => {

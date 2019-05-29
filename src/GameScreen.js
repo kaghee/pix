@@ -26,10 +26,18 @@ export default class GameScreen extends Component {
       drawersWord: '',
       wordWas: '',
       finishedPlayers: [],
+      order: [],
     };
   }
 
   componentDidMount() {
+    this.props.socket.on('startGame', (order) => {
+      this.setState({
+        order,
+        userChoosing: order[0],
+      });
+    });
+
     this.props.socket.on('newWordIsUp', (dummy) => {
       this.hideRoundOverModal();
       this.hideWordsModal();
