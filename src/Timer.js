@@ -36,6 +36,10 @@ export default class Timer extends Component {
   tick = () => {
     this.setState(prevState => ({ seconds: prevState.seconds - 1 }));
 
+    if (this.state.seconds === 45 || this.state.seconds === 30 || this.state.seconds === 20) {
+      this.props.giveAHint();
+    }
+
     if (this.state.seconds === 0) {
       clearInterval(this.state.intervalHandle);
       this.props.endCountDown();

@@ -38,14 +38,20 @@ export default class GameScreen extends Component {
     //   });
     // });
 
-    this.props.socket.on('newWordIsUp', (dummy) => {
-      this.hideRoundOverModal();
-      this.hideWordsModal();
-      this.setState({
-        userRole: 'guesser',
-        currentWord: dummy,
-        roundInProgress: true,
-      });
+    this.props.socket.on('newWordIsUp', (dummy, type) => {
+      if (type === 'original') {
+        this.hideRoundOverModal();
+        this.hideWordsModal();
+        this.setState({
+          userRole: 'guesser',
+          currentWord: dummy,
+          roundInProgress: true,
+        });
+      } else {
+        this.setState({
+          currentWord: dummy,
+        });
+      }
     });
 
     this.props.socket.on('userChoosingWord', (user) => {
@@ -150,6 +156,12 @@ export default class GameScreen extends Component {
     this.hideWordsModal();
   }
 
+  giveAHint = () => {
+    if (this.state.userRole === 'drawer') {
+      this.props.socket.emit('giveAHint');
+    }
+  }
+
   render() {
     return (
       <div className="wrapper">
@@ -171,6 +183,7 @@ export default class GameScreen extends Component {
                     seconds={this.state.seconds}
                     roundInProgress={this.state.roundInProgress}
                     endCountDown={this.endRound}
+                    giveAHint={this.giveAHint}
                     socket={socket}
                   />
                 )}

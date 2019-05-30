@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class WordToGuess extends Component {
-  render() {
-    const dummy = this.props.word.split('').map(() => '_');
-    const wordToDisplay = this.props.userRole === 'drawer' ? this.props.drawersWord : this.props.word;
+function WordToGuess(props) {
+  const wordToDisplay = props.userRole === 'drawer' ? props.drawersWord : props.word;
 
-    return (
-      <div className="current-word">
-        {this.props.roundInProgress ? wordToDisplay : ''}
-      </div>
-    );
-  }
+  return (
+    <div className="current-word">
+      {props.roundInProgress ? wordToDisplay : ''}
+    </div>
+  );
 }
+
+export default WordToGuess;

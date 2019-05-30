@@ -14,6 +14,7 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 let currentWord = '';
+let dummy = '';
 
 server.listen(PORT, (err) => {
   if (err) {
@@ -138,8 +139,8 @@ io.on('connection', (socket) => {
 
   socket.on('newWordToGuess', (word) => {
     currentWord = word;
-    const dummy = word.split('').map(() => '_').join('');
-    socket.broadcast.emit('newWordIsUp', dummy);
+    dummy = word.split('').map(() => '_').join('');
+    socket.broadcast.emit('newWordIsUp', dummy, 'original');
   });
 
   socket.on('startCountDown', () => {
@@ -184,5 +185,16 @@ io.on('connection', (socket) => {
 
   socket.on('iconChanged', (user, icon) => {
     socket.broadcast.emit('iconChanged', user, icon);
+  });
+
+  socket.on('giveAHint', () => {
+    const randomIndex = Math.floor(Math.random() * currentWord.length - 1);
+
+    function replaceAt(string, index, replace) {
+      return string.substring(0, index) + replace + string.substring(index + 1);
+    }
+
+    dummy = replaceAt(dummy, randomIndex, currentWord[randomIndex]);
+    io.emit('newWordIsUp', dummy, 'hint');
   });
 });
