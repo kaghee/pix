@@ -188,13 +188,36 @@ io.on('connection', (socket) => {
   });
 
   socket.on('giveAHint', () => {
-    const randomIndex = Math.floor(Math.random() * currentWord.length - 1);
+    function shouldRevealALetter() {
+      // if word is 3 letters long, reveal only 1
+      if (currentWord.length === 3 && (dummy.match(/[^_]/g) || []).length === 0) {
+        return true;
+      }
+      // if word is 4-5 letters long, reveal only 2
+      if (currentWord.length > 3 && currentWord.length < 6 && (dummy.match(/[^_]/g) || []).length < 2) {
+        return true;
+      }
+      // if word is longer than 5 letters, reveal 3
+      if (currentWord.length > 5) {
+        return true;
+      }
+      return false;
+    }
 
     function replaceAt(string, index, replace) {
       return string.substring(0, index) + replace + string.substring(index + 1);
     }
 
-    dummy = replaceAt(dummy, randomIndex, currentWord[randomIndex]);
-    io.emit('newWordIsUp', dummy, 'hint');
+    const valami = shouldRevealALetter();
+
+    if (valami) {
+      const getRandomIndex = () => Math.floor(Math.random() * currentWord.length - 1);
+      let randomIndex = getRandomIndex();
+      while (dummy[randomIndex] !== '_') {
+        randomIndex = getRandomIndex();
+      }
+      dummy = replaceAt(dummy, randomIndex, currentWord[randomIndex]);
+      io.emit('newWordIsUp', dummy, 'hint');
+    }
   });
 });
