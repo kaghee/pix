@@ -57,7 +57,6 @@ platypus
 music
 jungle
 important
-mime
 peasant
 baggage
 hail
@@ -65,17 +64,15 @@ clog
 pizza
 sauce
 password
-Heinz
+gargoyle
 scream
 newsletter
-dripping
 pharmacist
 lie
 catalog
 husband
 laser
 diagonal
-comfy
 myth
 biscuit
 hydrogen
@@ -89,9 +86,7 @@ chestnut
 ditch
 wobble
 glitter
-neighborhood
 dizzy
-fireside
 drawback
 logo
 fabric
@@ -99,7 +94,6 @@ mirror
 barber
 jazz
 migrate
-drought
 commercial
 dashboard
 bargain

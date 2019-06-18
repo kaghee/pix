@@ -245,7 +245,6 @@ export default class App extends Component {
                 {...props}
                 enterChat={this.enterChat}
                 createRoom={this.handleCreateRoom}
-                rooms={this.state.rooms}
                 socket={socket}
               />
             </SocketContext.Provider>

@@ -42,7 +42,7 @@ export default class Timer extends Component {
 
     if (this.state.seconds === 0) {
       clearInterval(this.state.intervalHandle);
-      this.props.endCountDown();
+      this.props.endCountDown('timeIsUp');
     }
   }
 

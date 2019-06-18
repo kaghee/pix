@@ -12,7 +12,6 @@ function Scoreboard(props) {
           </li>
         ))}
       </ul>
-
     </div>
   );
 }

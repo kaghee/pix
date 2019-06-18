@@ -26,18 +26,10 @@ export default class GameScreen extends Component {
       drawersWord: '',
       wordWas: '',
       finishedPlayers: [],
-      // order: [],
     };
   }
 
   componentDidMount() {
-    // this.props.socket.on('startGame', (order) => {
-    //   this.setState({
-    //     order,
-    //     userChoosing: order[0],
-    //   });
-    // });
-
     this.props.socket.on('newWordIsUp', (dummy, type) => {
       if (type === 'original') {
         this.hideRoundOverModal();
@@ -62,7 +54,7 @@ export default class GameScreen extends Component {
       });
     });
 
-    this.props.socket.on('endRound', (word) => {
+    this.props.socket.on('roundEnded', (word) => {
       this.openRoundOverModal();
       this.setState({
         wordWas: word,
@@ -85,7 +77,7 @@ export default class GameScreen extends Component {
         });
       }
       if (this.state.finishedPlayers.length === this.props.players.length - 1) {
-        this.props.socket.emit('endRound');
+        this.endRound('everyoneGuessed');
       }
     });
   }
@@ -133,14 +125,8 @@ export default class GameScreen extends Component {
     this.props.socket.emit('userChoosingWord', this.props.user);
   }
 
-  endRound = () => {
-    this.props.socket.emit('endRound');
-    // this.openRoundOverModal();
-    // this.setState({
-    //   roundInProgress: false,
-    //   userRole: 'guesser',
-    //   canDraw: false,
-    // });
+  endRound = (reason) => {
+    this.props.socket.emit('endRound', reason);
   }
 
   handleWordSelect = (word) => {
@@ -166,7 +152,10 @@ export default class GameScreen extends Component {
     return (
       <div className="wrapper">
         <button className={this.state.roundInProgress ? 'start-btn hidden' : 'start-btn'} type="button" onClick={this.startRound}>G O !</button>
-        <Scoreboard players={this.props.players} finishedPlayers={this.state.finishedPlayers} />
+        <Scoreboard
+          players={this.props.players}
+          finishedPlayers={this.state.finishedPlayers}
+        />
         <div className="middle">
           <div className="title-and-word-container">
             <span>P I X I T</span>
