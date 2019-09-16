@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import SocketContext from './SocketContext';
-import Scoreboard from './Scoreboard';
+import SocketContext from '../SocketContext';
+import Scoreboard from './board/Scoreboard';
 import Chat from './chat/Chat';
 import Canvas from './canvas/Canvas';
 import WordsModal from './modals/WordsModal';
 import RoundOverModal from './modals/RoundOverModal';
-import './css/App.scss';
-import defaultWords from './assets/words/default.txt';
-import WordToGuess from './WordToGuess';
-import Timer from './Timer';
+import '../css/App.scss';
+import defaultWords from '../assets/words/default.txt';
+import WordToGuess from './board/WordToGuess';
+import Timer from './board/Timer';
 
 export default class GameScreen extends Component {
   constructor(props) {

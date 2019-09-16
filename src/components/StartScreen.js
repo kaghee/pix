@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './css/StartScreens.scss';
-import PlayerAvatar from './PlayerAvatar';
-import animals from './assets/animals';
-import stars from './assets/stars.txt';
+import '../css/StartScreens.scss';
+import PlayerAvatar from './board/PlayerAvatar';
+import animals from '../assets/animals';
+import stars from '../assets/stars.txt';
 
 export default class StartScreen extends Component {
   constructor(props) {

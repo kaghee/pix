@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './css/StartScreens.scss';
-import avatars from './assets/avatars';
+import '../../css/StartScreens.scss';
+import avatars from '../../assets/avatars';
 
 const icons = avatars();
 

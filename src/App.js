@@ -9,9 +9,9 @@ import {
   faCrown, faCameraRetro,
 } from '@fortawesome/free-solid-svg-icons';
 import SocketContext from './SocketContext';
-import GameScreen from './GameScreen';
-import StartScreen from './StartScreen';
-import CreateRoomScreen from './CreateRoomScreen';
+import GameScreen from './components/GameScreen';
+import StartScreen from './components/StartScreen';
+import CreateRoomScreen from './components/CreateRoomScreen';
 import './css/App.scss';
 
 const socket = io('http://localhost:4000');
@@ -97,7 +97,7 @@ export default class App extends Component {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'http://localhost:4001',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

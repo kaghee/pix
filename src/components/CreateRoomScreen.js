@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './css/StartScreens.scss';
+import '../css/StartScreens.scss';
 
 export default class CreateRoomScreen extends Component {
   componentDidMount = () => {

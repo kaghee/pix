@@ -19,7 +19,12 @@ function MessageList(props) {
     }
     return (
       <li key={message.id} className="message">
-        <span className="sender">{message.senderId}</span>: <span className="text">{messageText}</span>
+        <span className="sender">
+          {message.senderId}
+        </span>
+        :
+        {' '}
+        <span className="text">{messageText}</span>
       </li>
     );
   });
