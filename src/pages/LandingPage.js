@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
+import createRoom from '../chat';
 import './Lobbies.scss';
 
 export default class LandingPage extends Component {
-  createRoom = () => {
-    const { userName } = this.props
-    console.log('function hahah n', userName);
+  handleCreateRoom = () => {
+    const {
+      username,
+      history,
+    } = this.props;
+    createRoom(username);
+    history.push('/lobby');
   }
 
   render() {
+    const { username } = this.props;
+
     return (
       <div className="start-wrapper">
         <div className="title">P I X I T</div>
@@ -18,7 +25,7 @@ export default class LandingPage extends Component {
               className="name"
               placeholder="Enter your name"
               maxLength="14"
-              onChange={e => this.props.updateUserName(e.target.value)}
+              onChange={e => this.props.updateUsername(e.target.value)}
             />
             <div className="room-options">
               <div className="join-room">
@@ -34,7 +41,7 @@ export default class LandingPage extends Component {
                 className="btn create"
                 type="button"
                 value="Create Private Room"
-                onClick={() => this.createRoom(this.props.userName)}
+                onClick={() => this.handleCreateRoom(username)}
               />
             </div>
           </div>

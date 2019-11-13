@@ -1,17 +1,17 @@
-const UPDATE_USER_NAME = 'UPDATE_USER_NAME';
+const UPDATE_USERNAME = 'UPDATE_USERNAME';
 const UPDATE_ROOM_NAME = 'UPDATE_ROOM_NAME';
 
 export default function reducer(
   state = {
-    userName: '',
+    username: '',
     roomName: '',
   }, action = {},
 ) {
   switch (action.type) {
-    case UPDATE_USER_NAME:
+    case UPDATE_USERNAME:
       return {
         ...state,
-        userName: action.userName,
+        username: action.username,
       };
     case UPDATE_ROOM_NAME:
       return {

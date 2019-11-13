@@ -5,9 +5,9 @@ export function updateRoomName(roomName) {
   };
 }
 
-export function updateUserName(userName) {
+export function updateUsername(username) {
   return {
-    type: 'UPDATE_USER_NAME',
-    userName,
+    type: 'UPDATE_USERNAME',
+    username,
   };
 }

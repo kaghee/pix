@@ -39,15 +39,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/users', (req, res) => {
-  const { username, owner, icon } = req.body;
+  const { username, isOwner } = req.body;
 
   chatkit.createUser({
     id: username,
     name: username,
     customData: {
       score: 0,
-      roomOwner: owner,
-      icon,
+      roomOwner: isOwner,
     },
   }).then(() => {
     console.log(`User ${username} created successfully`);

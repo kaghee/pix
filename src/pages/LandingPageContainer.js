@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
-import { updateUserName } from '../actions';
+import { updateUsername } from '../actions';
 import LandingPage from './LandingPage';
 
 const mapStateToProps = state => ({
-  userName: state.userName,
+  username: state.username,
   roomName: state.roomName,
 });
 
 const mapDispatchToProps = {
-  updateUserName,
+  updateUsername,
 };
 
 const LandingPageContainer = connect(

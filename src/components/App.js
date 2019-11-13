@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import LandingPageContainer from '../pages/LandingPageContainer';
-import Lobby from '../pages/Lobby';
+import LobbyContainer from '../pages/Lobby';
 import GameScreen from '../pages/GameScreen';
 import './App.scss';
 
@@ -20,10 +20,6 @@ export default class App extends Component {
     }
   }
 
-  createRoom = (name) => {
-    console.log(name);
-  }
-
   render() {
     return (
       <div>
@@ -33,7 +29,6 @@ export default class App extends Component {
           render={props => (
             <LandingPageContainer
               {...props}
-              createRoom={this.createRoom}
             />
           )}
         />
@@ -41,7 +36,7 @@ export default class App extends Component {
           exact
           path="/lobby"
           render={props => (
-            <Lobby
+            <LobbyContainer
               {...props}
             />
           )}
