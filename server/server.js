@@ -73,6 +73,10 @@ io.on('connection', (socket) => {
     })
     .catch(err => console.error(err));
 
+  // delete all users
+  chatkit.getUsers()
+    .then(res => console.log(res))
+
   socket.on('drawing', (data) => {
     socket.broadcast.emit('drawing', { data });
   });

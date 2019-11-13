@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+.start-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  .title {
+    font-size: 65px;
+    color: #fff;
+    font-family: "Cantarell Light", sans-serif;
+    cursor: default;
+  }
+}
+
+.start-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 400px;
+  width: 400px;
+  border: 3px solid black;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.5);
+  input, button, select, .label {
+    border: none;
+    border-radius: 3px;
+    font-size: 20px;
+    padding: 8px 10px;
+  }
+  .btn {
+    box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
+    cursor: pointer;
+    &:hover {
+      background-color: lighten(salmon, 15%);
+      transform: none;
+      transition: 0.3s;
+    }
+    &:focus {
+      border: none;
+      outline: none;
+    }
+  }
+}
+
+.start-form {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  p {
+    text-align: center;
+  }
+  .room-options {
+    display: flex;
+    flex-direction: column;
+    .join-room {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 40px;
+      & * {
+        width: 100%;
+      }
+    }
+  }
+}
