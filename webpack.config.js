@@ -1,4 +1,5 @@
 module.exports = {
+  devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
@@ -8,6 +9,11 @@ module.exports = {
         test: /\.(js|ts)x?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
       },
       {
         test: /\.scss$/,
