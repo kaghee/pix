@@ -5,7 +5,7 @@ module.exports = {
   "parserOptions": {
     "project": "./tsconfig.json",
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "jest"],
   "settings": {
     "import/parsers": {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
@@ -42,5 +42,6 @@ module.exports = {
   },
   "env": {
     "browser": true,
+    "jest/globals": true
   },
 };
