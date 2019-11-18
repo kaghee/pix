@@ -21,6 +21,7 @@ exports[`Renders without error 1`] = `
         onChange={[Function]}
         placeholder="Enter your name"
         type="text"
+        value=""
       />
       <div
         className="room-options"
