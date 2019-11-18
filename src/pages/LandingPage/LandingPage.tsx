@@ -1,9 +1,9 @@
 import { History } from 'history';
 import React, { Component } from 'react';
 
-import createRoom from '../chat';
+import createRoom from '../../chat';
 
-import './Lobbies.scss';
+import '../Lobbies.scss';
 
 interface Props {
   username: string

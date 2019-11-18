@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders without error 1`] = `
+<div
+  className="start-wrapper"
+>
+  <div
+    className="title"
+  >
+    P I X I T
+  </div>
+  <div
+    className="start-box"
+  >
+    <div
+      className="start-form"
+    >
+      <input
+        className="name"
+        maxLength={14}
+        onChange={[Function]}
+        placeholder="Enter your name"
+        type="text"
+      />
+      <div
+        className="room-options"
+      >
+        <div
+          className="join-room"
+        >
+          <input
+            maxLength={20}
+            onChange={[Function]}
+            placeholder="Enter Room ID (optional)"
+            type="text"
+          />
+          <input
+            className="btn join"
+            type="button"
+            value="Join Room"
+          />
+        </div>
+        <input
+          className="btn create"
+          onClick={[Function]}
+          type="button"
+          value="Create Private Room"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
