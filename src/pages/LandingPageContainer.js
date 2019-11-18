@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updateUsername } from '../actions';
+import { updateUsername, updateRoomName } from '../actions';
 import LandingPage from './LandingPage';
 
 const mapStateToProps = state => ({
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   updateUsername,
+  updateRoomName,
 };
 
 const LandingPageContainer = connect(
