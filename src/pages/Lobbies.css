@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  .title {
+  & .title {
     font-size: 65px;
     color: #fff;
     font-family: "Cantarell Light", sans-serif;
@@ -26,13 +26,13 @@
   border: 3px solid black;
   border-radius: 3px;
   background-color: rgba(255, 255, 255, 0.5);
-  input, button, select, .label {
+  & input, & button, & select, & .label {
     border: none;
     border-radius: 3px;
     font-size: 20px;
     padding: 8px 10px;
   }
-  .btn {
+  & .btn {
     box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, .4);
     cursor: pointer;
     &:hover {
@@ -54,13 +54,13 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  p {
+  & p {
     text-align: center;
   }
-  .room-options {
+  & .room-options {
     display: flex;
     flex-direction: column;
-    .join-room {
+    & .join-room {
       display: flex;
       flex-direction: column;
       margin-bottom: 40px;
