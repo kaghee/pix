@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -24,8 +26,8 @@ server.listen(PORT, (err) => {
   }
 });
 
-const instanceLocator = 'v1:us1:aecdc8b8-e7df-41c8-b3d1-c141e957ce9e';
-const secretKey = 'b19e1576-cfd3-467e-bc47-93b00d4b2f60:ftpEZSxYsLn9v7M2kAmI0YT6Lmh5WQXIH78yAisQpSc=';
+const instanceLocator = process.env.CHATKIT_INSTANCE_LOCATOR;
+const secretKey = process.env.CHATKIT_SECRET_KEY;
 
 const chatkit = new Chatkit.default({
   instanceLocator,
