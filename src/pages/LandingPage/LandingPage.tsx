@@ -33,6 +33,7 @@ export default class LandingPage extends Component<Props, {}> {
               className="name"
               placeholder="Enter your name"
               maxLength={14}
+              value={this.props.username}
               onChange={e => this.props.updateUsername(e.target.value)}
             />
             <div className="room-options">
