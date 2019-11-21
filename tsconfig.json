@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "module": "es6",
+    "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
     "jsx": "react",
@@ -22,6 +23,7 @@
     "noUnusedParameters": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
+    "esModuleInterop": true,
     "paths": {
       "*": [
         "types/*"

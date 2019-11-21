@@ -5,7 +5,7 @@ module.exports = {
   "parserOptions": {
     "project": "./tsconfig.json",
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "jest"],
   "settings": {
     "import/parsers": {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
@@ -22,6 +22,8 @@ module.exports = {
     // ESLint `no-unused-vars` fails when imports are used as type annotations
     "no-unused-vars": 0,
     "@typescript-eslint/no-unused-vars": ['error', { 'vars': 'all', 'args': 'none' }],
+    // Until fixed: https://github.com/SoominHan/import-sorter/issues/48
+    "import/no-useless-path-segments": 0,
     "import/prefer-default-export": 1,
     "import/no-extraneous-dependencies": 0,
     "import/no-unresolved": 1,
@@ -42,5 +44,6 @@ module.exports = {
   },
   "env": {
     "browser": true,
+    "jest/globals": true
   },
 };

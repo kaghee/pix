@@ -1,0 +1,9 @@
+name: main
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: bahmutov/npm-install@v1
+    - run: npm test
