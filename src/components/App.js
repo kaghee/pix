@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import LandingPageContainer from '../pages/LandingPageContainer';
 import LobbyContainer from '../pages/Lobby';
 import GameScreen from '../pages/GameScreen';
-import './App.scss';
+import './App.css';
 
 export default class App extends Component {
   componentDidMount() {

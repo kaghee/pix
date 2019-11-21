@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 import createRoom from '../../chat';
 
-import '../Lobbies.scss';
+import '../Lobbies.css';
 
 interface Props {
   username: string

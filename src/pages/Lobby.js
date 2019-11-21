@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Lobbies.scss';
+import './Lobbies.css';
 
 export default class Lobby extends Component {
   handlePlay = () => {
